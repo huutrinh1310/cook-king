@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import fptu.prm.cookcook.databinding.ActivitySignUpBinding;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -38,14 +40,15 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        mAuth = FirebaseAuth.getInstance();
-        mEmail = mViewBinding.edtEmail.getText().toString().trim();
-        mPassword = mViewBinding.edtPassword.getText().toString().trim();
-        mConfirmPassword = mViewBinding.edtConfirmPassword.getText().toString().trim();
+
     }
 
     private void initControl() {
         mViewBinding.btnSignUp.setOnClickListener(view -> {
+            mAuth = FirebaseAuth.getInstance();
+            mEmail = Objects.requireNonNull(mViewBinding.edtEmail.getText()).toString().trim();
+            mPassword = Objects.requireNonNull(mViewBinding.edtPassword.getText()).toString().trim();
+            mConfirmPassword = Objects.requireNonNull(mViewBinding.edtConfirmPassword.getText()).toString().trim();
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
