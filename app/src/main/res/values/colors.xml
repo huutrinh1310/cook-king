@@ -15,4 +15,6 @@
     <color name="dark_yellow">#FFDAA520</color>
     <color name="light_green">#FF90EE90</color>
     <color name="green">#FF008000</color>
+    <color name="ColorPrimary">@color/yellow</color>
+    <color name="ColorSecondary">@color/dark_yellow</color>
 </resources>
