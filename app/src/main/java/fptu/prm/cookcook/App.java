@@ -17,6 +17,7 @@ public class App extends android.app.Application {
         super.onCreate();
         mInstance = this;
         mGson = new com.google.gson.Gson();
+
     }
 
 }
