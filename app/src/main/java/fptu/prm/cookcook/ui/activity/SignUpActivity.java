@@ -39,9 +39,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void initData() {
         mAuth = FirebaseAuth.getInstance();
-        mEmail = mViewBinding.edtEmail.getText().toString().trim();
-        mPassword = mViewBinding.edtPassword.getText().toString().trim();
-        mConfirmPassword = mViewBinding.edtConfirmPassword.getText().toString().trim();
+//        mEmail = mViewBinding.edtEmail.getText().toString().trim();
+//        mPassword = mViewBinding.edtPassword.getText().toString().trim();
+//        mConfirmPassword = mViewBinding.edtConfirmPassword.getText().toString().trim();
     }
 
     private void initControl() {
