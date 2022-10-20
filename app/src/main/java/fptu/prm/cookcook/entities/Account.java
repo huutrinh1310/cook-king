@@ -2,6 +2,8 @@ package fptu.prm.cookcook.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Account {
 
     @SerializedName("userId")
@@ -10,8 +12,6 @@ public class Account {
     private String userName;
     @SerializedName("email")
     private String email;
-    @SerializedName("account")
-    private String account;
     @SerializedName("password")
     private String password;
     @SerializedName("avatar")
@@ -21,18 +21,20 @@ public class Account {
     @SerializedName("phone")
     private String phone;
 
+    private List<Integer> list;
+
     public Account() {
     }
 
-    public Account(String userId, String userName, String email, String account, String password, String avatar, String address, String phone) {
+    public Account(String userId, String userName, String email, String password, String avatar, String address, String phone, List<Integer> list) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
-        this.account = account;
         this.password = password;
         this.avatar = avatar;
         this.address = address;
         this.phone = phone;
+        this.list = list;
     }
 
     public String getUserId() {
@@ -57,14 +59,6 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
     }
 
     public String getPassword() {
@@ -99,17 +93,11 @@ public class Account {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+    public List<Integer> getList() {
+        return list;
+    }
+
+    public void setList(List<Integer> list) {
+        this.list = list;
     }
 }
