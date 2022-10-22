@@ -4,40 +4,60 @@ import com.google.gson.annotations.SerializedName;
 
 public class Ingredients {
 
-    @SerializedName("ingredientId")
-    private String ingredientId;
-    @SerializedName("ingredientName")
-    private String ingredientName;
+    private int id;
+    private String name;
+    private int amount;
+    private String unit;
 
     public Ingredients() {
     }
 
-    public Ingredients(String ingredientId, String ingredientName) {
-        this.ingredientId = ingredientId;
-        this.ingredientName = ingredientName;
+    public Ingredients(int id, String name, int amount, String unit) {
+        this.id = id;
+        this.name = name;
+        this.amount = amount;
+        this.unit = unit;
     }
 
-    public String getIngredientId() {
-        return ingredientId;
+    public int getId() {
+        return id;
     }
 
-    public void setIngredientId(String ingredientId) {
-        this.ingredientId = ingredientId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getIngredientName() {
-        return ingredientName;
+    public String getName() {
+        return name;
     }
 
-    public void setIngredientName(String ingredientName) {
-        this.ingredientName = ingredientName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override
     public String toString() {
         return "Ingredients{" +
-                "ingredientId='" + ingredientId + '\'' +
-                ", ingredientName='" + ingredientName + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", unit='" + unit + '\'' +
                 '}';
     }
 }
