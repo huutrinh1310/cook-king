@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "68582550587",
+    "firebase_url": "https://cook-king-43c28-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "cook-king-43c28",
     "storage_bucket": "cook-king-43c28.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "68582550587-3v9bdt26133i88emqojr17m99s2rqceq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fptu.prm.cookcook",
+            "certificate_hash": "f59ac8a72c71a01e0b54c95f3adae78228ef1fab"
+          }
+        },
         {
           "client_id": "68582550587-o8lngp3gmcah9lrtjk61j24c6ffe19o7.apps.googleusercontent.com",
           "client_type": 1,
