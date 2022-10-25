@@ -10,9 +10,9 @@ public class Account {
     private String address;
     private String avatar;
     private String email;
-    private Map<Integer,Integer> listOfFollower;
-    private Map<Integer,Integer> listOfFollowing;
-    private Map<Integer,Integer> listOfRecipes;
+    private Map<Integer, Integer> listOfFollower;
+    private Map<Integer, Integer> listOfFollowing;
+    private Map<Integer, Integer> listOfRecipes;
     private String name;
     private String username;
     private String password;

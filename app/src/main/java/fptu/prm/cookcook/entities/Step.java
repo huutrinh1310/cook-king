@@ -4,13 +4,13 @@ import java.util.Map;
 
 public class Step {
     private int id;
-    private int description;
+    private String description;
     private Map<String, String> images;
 
     public Step() {
     }
 
-    public Step(int id, int description, Map<String, String> images) {
+    public Step(int id, String description, Map<String, String> images) {
         this.id = id;
         this.description = description;
         this.images = images;
@@ -24,11 +24,11 @@ public class Step {
         this.id = id;
     }
 
-    public int getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(int description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
