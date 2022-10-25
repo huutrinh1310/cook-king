@@ -2,6 +2,7 @@ package fptu.prm.cookcook.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Objects;
+
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.databinding.ActivitySignInBinding;
 
@@ -28,6 +31,7 @@ public class SignInActivity extends AppCompatActivity {
     private GoogleSignInOptions mOptions;
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE_SIGN_IN = 200;
+    private final String TAG = SignInActivity.class.getName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +51,26 @@ public class SignInActivity extends AppCompatActivity {
 
     private void initControl() {
         mViewBinding.btnSignIn.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            String email = Objects.requireNonNull(mViewBinding.edtEmail.getText()).toString().trim();
+            String password = Objects.requireNonNull(mViewBinding.edtPassword.getText()).toString().trim();
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    });
+
         });
 
         mViewBinding.btnSignInWithGoogle.setOnClickListener(view -> {
@@ -66,6 +88,9 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
+    private void updateUI(FirebaseUser user) {
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -77,7 +102,7 @@ public class SignInActivity extends AppCompatActivity {
                 mAuth.signInWithCredential(credential)
                         .addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                Toast.makeText(this, "Sign in successful, welcome "+ account.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Sign in successful, welcome " + account.getDisplayName(), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(this, MainActivity.class);
                                 startActivity(intent);
                             } else {
@@ -95,7 +120,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null){
+        if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
