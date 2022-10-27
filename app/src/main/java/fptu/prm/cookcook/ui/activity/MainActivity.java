@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,7 +23,7 @@ import fptu.prm.cookcook.utils.TranslateAnimationUtil;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
-    private CoordinatorLayout bodyContainer;
+    private FrameLayout bodyContainer;
 
     private void bindingView() {
         bodyContainer = findViewById(R.id.body_container);

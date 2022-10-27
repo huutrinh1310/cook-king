@@ -37,10 +37,12 @@
                 android:id="@+id/txtRecipeName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/recipe_name"
+                android:text="string recipe name"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:padding="@dimen/_1sdp"
+                android:maxLength="14"
+                android:ellipsize="end"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imgRecipe" />
