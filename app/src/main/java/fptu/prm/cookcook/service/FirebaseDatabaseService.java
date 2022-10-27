@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import fptu.prm.cookcook.utils.ToastUtil;
 
-public class FirebaseService {
+public class FirebaseDatabaseService {
     private static FirebaseDatabase database;
     private static DatabaseReference myRef;
 
