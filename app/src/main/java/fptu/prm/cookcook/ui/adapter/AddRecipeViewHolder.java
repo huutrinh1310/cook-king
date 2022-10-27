@@ -13,8 +13,12 @@ import com.bumptech.glide.Glide;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.entities.Recipe;
+import fptu.prm.cookcook.ui.activity.MainActivity;
+import fptu.prm.cookcook.ui.fragment.AddRecipeFragment;
+import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
+import fptu.prm.cookcook.utils.ToastUtil;
 
-public class AddRecipeViewHolder extends RecyclerView.ViewHolder {
+public class AddRecipeViewHolder extends RecyclerView.ViewHolder{
     private Context mContext;
     private ImageView imgRecipe;
     private TextView txtRecipeName;
@@ -42,6 +46,6 @@ public class AddRecipeViewHolder extends RecyclerView.ViewHolder {
                 .load(recipe.getImage())
                 .into(imgRecipe);
         txtRecipeName.setText(recipe.getTitle());
-        txtRecipeDescription.setText(recipe.getReadyInMinutes()+"");
+        txtRecipeDescription.setText(recipe.getReadyInMinutes() + "");
     }
 }
