@@ -102,11 +102,17 @@ public class SignInActivity extends AppCompatActivity {
                 mAuth.signInWithCredential(credential)
                         .addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                Toast.makeText(this, "Sign in successful, welcome " + account.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(
+                                        this,
+                                        "Sign in successful, welcome " + account.getDisplayName(),
+                                        Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(this, MainActivity.class);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(this, task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(
+                                        this,
+                                        task1.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
                             }
                         });
             } catch (ApiException e) {
