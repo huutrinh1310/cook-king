@@ -1,20 +1,26 @@
 package fptu.prm.cookcook.utils;
 
 public class SeperateUtil {
+    private static SeperateUtil instance;
+    private SeperateUtil() {
+    }
+    public static SeperateUtil getInstance() {
+        if (instance == null) {
+            instance = new SeperateUtil();
+        }
+        return instance;
+    }
+
     public static String seperateNumberBetweenUnit(String s) {
         StringBuilder result = new StringBuilder();
-        String[] arr = s.split(" ");
-        if (arr[0].matches("[0-9A-Za-z]+")) {
-            for (int i = 0; i < arr[0].length(); i++) {
-                result.append(arr[0].charAt(i));
-                if (Character.isDigit(arr[0].charAt(i)) && !Character.isDigit(arr[0].charAt(i + 1))) {
-                    result.append(" ").append(arr[0].charAt(i + 1));
-                    break;
-                }
-            }
+        String stringSplit[] = s.split(" ");
+        if(stringSplit[0].matches(".*\\d.*")){
+            String number = stringSplit[0].replaceAll("[^0-9/.,]", "");
+            String unit = stringSplit[0].replaceAll("[0-9/.,]", "");
+            result.append(number).append(" ").append(unit);
         }
-        for (int i = 1; i < arr.length; i++) {
-            result.append(" ").append(arr[i]);
+        for (int i = 1; i < stringSplit.length; i++) {
+            result.append(" ").append(stringSplit[i]);
         }
         return result.toString();
     }
