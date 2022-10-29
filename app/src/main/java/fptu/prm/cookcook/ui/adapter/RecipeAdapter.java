@@ -10,22 +10,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.activity.MainActivity;
 import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
-import fptu.prm.cookcook.utils.ToastUtil;
 
-public class AddRecipeAdapter extends RecyclerView.Adapter<AddRecipeViewHolder> {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     private Context mContext;
     private List<Recipe> recipeList;
     private final LayoutInflater layoutInflater;
+    private int mLayoutId;
     private MainActivity mainActivity;
+    private IClickItemListener mIClickItemListener;
 
-    public AddRecipeAdapter(Context context, List<Recipe> recipeList) {
+
+    public interface IClickItemListener {
+        void onItemClick(Recipe recipe);
+    }
+
+    public RecipeAdapter(Context context, List<Recipe> recipeList, int layoutId, IClickItemListener iClickItemListener) {
         this.mContext = context;
         this.recipeList = recipeList;
         this.layoutInflater = LayoutInflater.from(context);
+        this.mLayoutId = layoutId;
+        this.mIClickItemListener = iClickItemListener;
     }
 
     public List<Recipe> getRecipeList() {
@@ -38,21 +45,19 @@ public class AddRecipeAdapter extends RecyclerView.Adapter<AddRecipeViewHolder> 
 
     @NonNull
     @Override
-    public AddRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_card_add_screen, parent, false);
-        return new AddRecipeViewHolder(view, mContext);
+    public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(mLayoutId, parent, false);
+        return new RecipeViewHolder(view, mContext);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddRecipeViewHolder holder, int position) {
-        int i = position;
-        holder.setRecipeItem(recipeList.get(position));
+    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
+        Recipe recipe = recipeList.get(position);
+        holder.setRecipeItem(recipe);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //MainActivity replace fragment
-                mainActivity = (MainActivity) mContext;
-                mainActivity.replaceFragment(new DetailRecipeFragment());
+                mIClickItemListener.onItemClick(recipe);
             }
         });
     }

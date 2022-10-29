@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Account {
-    private int id;
+    private String id;
     private String address;
     private String avatar;
     private String email;
-    private Map<Integer, Integer> listOfFollower;
-    private Map<Integer, Integer> listOfFollowing;
-    private Map<Integer, Integer> listOfRecipes;
+    private List<Integer> listOfFollower;
+    private List<Integer> listOfFollowing;
+    private List<Integer> listOfRecipes;
     private String name;
     private String username;
     private String password;
@@ -21,7 +21,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String address, String avatar, String email, Map<Integer, Integer> listOfFollower, Map<Integer, Integer> listOfFollowing, Map<Integer, Integer> listOfRecipes, String name, String username, String password, String phone) {
+    public Account(String id, String address, String avatar, String email, List<Integer> listOfFollower, List<Integer> listOfFollowing, List<Integer> listOfRecipes, String name, String username, String password, String phone) {
         this.id = id;
         this.address = address;
         this.avatar = avatar;
@@ -35,11 +35,11 @@ public class Account {
         this.phone = phone;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -67,27 +67,27 @@ public class Account {
         this.email = email;
     }
 
-    public Map<Integer, Integer> getListOfFollower() {
+    public List<Integer> getListOfFollower() {
         return listOfFollower;
     }
 
-    public void setListOfFollower(Map<Integer, Integer> listOfFollower) {
+    public void setListOfFollower(List<Integer> listOfFollower) {
         this.listOfFollower = listOfFollower;
     }
 
-    public Map<Integer, Integer> getListOfFollowing() {
+    public List<Integer> getListOfFollowing() {
         return listOfFollowing;
     }
 
-    public void setListOfFollowing(Map<Integer, Integer> listOfFollowing) {
+    public void setListOfFollowing(List<Integer> listOfFollowing) {
         this.listOfFollowing = listOfFollowing;
     }
 
-    public Map<Integer, Integer> getListOfRecipes() {
+    public List<Integer> getListOfRecipes() {
         return listOfRecipes;
     }
 
-    public void setListOfRecipes(Map<Integer, Integer> listOfRecipes) {
+    public void setListOfRecipes(List<Integer> listOfRecipes) {
         this.listOfRecipes = listOfRecipes;
     }
 

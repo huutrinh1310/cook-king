@@ -27,6 +27,7 @@
                 android:src="@drawable/ic_person" />
 
             <TextView
+                android:id="@+id/txtRecipeNameDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
@@ -54,7 +55,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_marginLeft="4dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -66,7 +67,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-
+                            android:id="@+id/txtUserLocationDetail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Viet Nam"
@@ -83,6 +84,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txtRecipeDescriptionDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="20dp"
@@ -96,8 +98,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white">
-
+            <!--TODO: nếu là món của bản thân thì đổi button này thành nút edit món ăn-->
             <Button
+                android:id="@+id/btnBookMark"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,6 +117,7 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/imgCookSnap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -121,6 +125,7 @@
                 android:src="@drawable/ic_outline_camera_alt_24" />
 
             <ImageView
+                android:id="@+id/imgLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -159,6 +164,7 @@
                     android:src="@drawable/ic_baseline_lock_clock_24" />
 
                 <TextView
+                    android:id="@+id/txtRecipeTimeDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -174,10 +180,11 @@
                     android:src="@drawable/ic_outline_person" />
 
                 <TextView
+                    android:id="@+id/txtServing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="30 phut"
+                    android:text="2 phan an"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -188,13 +195,7 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="1. 1kg thit heo"
-                    android:textSize="14sp" />
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -210,48 +211,6 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:text="3. 1kg thit heo"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingTop="20dp"
-                android:paddingEnd="20dp"
-                android:text="Gia vị"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/lnrSpiceDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="Muối"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="Bột ngọt"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="Tiêu xay"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -280,38 +239,43 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="1. Bước 1"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="1. Bước 1"
-                    android:textSize="14sp" />
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="1. Bước 1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="1. Bước 1"
+                        android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/ic_person" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_person" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -335,6 +299,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/lnrCreaterDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -348,7 +313,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_4sdp"
+                    android:layout_marginLeft="4dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -400,7 +365,7 @@
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecipeSameAuthor"
+                android:id="@+id/rcvRecipeSameAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"/>

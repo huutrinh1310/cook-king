@@ -6,12 +6,12 @@ import android.content.SharedPreferences;
 import fptu.prm.cookcook.App;
 
 public class SharePreferenceManager {
-    private static final String PREFS_NAME = "share_prefs";
+    private static final String PREFERENCES_NAME = "preferences_storage";
     private static SharePreferenceManager mInstance;
     private final SharedPreferences mSharedPreferences;
 
     private SharePreferenceManager() {
-        mSharedPreferences = App.self().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        mSharedPreferences = App.self().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     public static SharePreferenceManager getInstance() {
