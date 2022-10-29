@@ -1,9 +1,7 @@
 package fptu.prm.cookcook.ui.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import fptu.prm.cookcook.IItemClickListener;
 import fptu.prm.cookcook.databinding.ItemAccountMenuBinding;
 import fptu.prm.cookcook.model.AccountMenu;
-import fptu.prm.cookcook.ui.adapter.AccountMenuAdapter.*;
+import fptu.prm.cookcook.ui.adapter.AccountMenuAdapter.AccountMenuViewHolder;
 
 public class AccountMenuAdapter extends RecyclerView.Adapter<AccountMenuViewHolder> {
     private Context mContext;

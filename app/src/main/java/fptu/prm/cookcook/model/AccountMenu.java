@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
 public class AccountMenu {
+    private int id;
     @DrawableRes
     private int iconRes;
     @StringRes
@@ -12,11 +13,20 @@ public class AccountMenu {
     private int descriptionRes;
     private boolean isOption = false;
 
-    public AccountMenu(int iconRes, int titleRes, int descriptionRes, boolean isOption) {
+    public AccountMenu(int id, int iconRes, int titleRes, int descriptionRes, boolean isOption) {
+        this.id = id;
         this.iconRes = iconRes;
         this.titleRes = titleRes;
         this.descriptionRes = descriptionRes;
         this.isOption = isOption;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIconRes() {
