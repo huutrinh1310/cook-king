@@ -15,6 +15,11 @@
     <color name="dark_yellow">#FFDAA520</color>
     <color name="light_green">#FF90EE90</color>
     <color name="green">#FF008000</color>
-    <color name="ColorPrimary">@color/yellow</color>
-    <color name="ColorSecondary">@color/dark_yellow</color>
+    <color name="colorPrimary">@color/yellow</color>
+    <color name="colorSecondary">@color/dark_yellow</color>
+
+    <color name="bg_addScreen">#f8f6f2</color>
+    <color name="bg_homeScreen">#f8f6f2</color>
+    <color name="dark">#414141</color>
+
 </resources>

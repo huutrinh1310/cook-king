@@ -1,6 +1,7 @@
 package fptu.prm.cookcook.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,17 +25,21 @@ import fptu.prm.cookcook.ui.fragment.AddFragment;
 import fptu.prm.cookcook.ui.fragment.HomeFragment;
 import fptu.prm.cookcook.ui.fragment.SearchFragment;
 import fptu.prm.cookcook.ui.fragment.UserFragment;
+import fptu.prm.cookcook.utils.TranslateAnimationUtil;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mViewBinding;
 
     private BottomNavigationView bottomNavigation;
+    private FrameLayout bodyContainer;
 
     private void bindingView() {
+        bodyContainer = findViewById(R.id.body_container);
         bottomNavigation = findViewById(R.id.bottom_navigation);
     }
 
     private void bindingAction() {
+        bodyContainer.setOnTouchListener(new TranslateAnimationUtil(this, bottomNavigation));
         bottomNavigation.setOnItemSelectedListener(this::onItemNavigationClick);
     }
 
@@ -56,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.body_container, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
