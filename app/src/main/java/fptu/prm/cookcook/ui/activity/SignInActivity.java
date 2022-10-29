@@ -28,7 +28,6 @@ import fptu.prm.cookcook.databinding.ActivitySignInBinding;
 public class SignInActivity extends AppCompatActivity {
     private ActivitySignInBinding mViewBinding;
     private GoogleSignInClient mClient;
-    private GoogleSignInOptions mOptions;
     private FirebaseAuth mAuth;
     private final int REQUEST_CODE_SIGN_IN = 200;
     private final String TAG = SignInActivity.class.getName();
@@ -39,11 +38,12 @@ public class SignInActivity extends AppCompatActivity {
         mViewBinding = ActivitySignInBinding.inflate(getLayoutInflater());
         View view = mViewBinding.getRoot();
         setContentView(view);
-        mOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions options = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mClient = GoogleSignIn.getClient(this, mOptions);
+        mClient = GoogleSignIn.getClient(this, options);
         mAuth = FirebaseAuth.getInstance();
         initView();
         initControl();
@@ -124,7 +124,6 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
