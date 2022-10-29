@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "68582550587-3v9bdt26133i88emqojr17m99s2rqceq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fptu.prm.cookcook",
+            "certificate_hash": "f59ac8a72c71a01e0b54c95f3adae78228ef1fab"
+          }
+        },
+        {
           "client_id": "68582550587-o8lngp3gmcah9lrtjk61j24c6ffe19o7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
