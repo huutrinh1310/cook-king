@@ -9,10 +9,10 @@
     <string name="add_recipe">Add recipe</string>
 
     <string name="cd_add_screen">content description add screen</string>
-    <string name="addTitle">Add a new recipe</string>
-    <string name="addDescription">Add a new recipe to your collection</string>
+    <string name="addTitle">Lữu trữ ghi chú vào bếp của bạn</string>
+    <string name="addDescription">Giúp cộng đồng tìm ý tưởng mới</string>
     <string name="addRecipe">Add recipe</string>
-    <string name="addRecipeDescription">Add a new recipe to your collection</string>
+    <string name="addRecipeDescription">Giúp cộng đồng tìm ý tưởng mới</string>
     <string name="btn_add_new_recipe">Viết món mới</string>
     <string name="btn_share_tips">Bí quyết</string>
     <string name="copy_right">Bản quyền của © Cook King Inc. All Rights Reserved</string>

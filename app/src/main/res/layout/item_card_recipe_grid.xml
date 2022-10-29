@@ -5,16 +5,21 @@
     android:orientation="vertical"
     >
     <ImageView
-        android:id="@+id/imgRecipeGrid"
-        android:layout_width="match_parent"
+        android:id="@+id/recipe_image"
+        android:layout_width="130dp"
         android:layout_height="130dp"
-        android:src="@drawable/ic_baseline_bookmark_border_24" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person"
+        android:layout_margin="5dp"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:clipToOutline="true"
+        android:outlineProvider="paddedBounds"
+        />
     <TextView
         android:id="@+id/txtRecipeGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:text="Hello World!" />
-
-
 </LinearLayout>
