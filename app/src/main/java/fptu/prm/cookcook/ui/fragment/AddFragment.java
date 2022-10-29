@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ import fptu.prm.cookcook.dao.Impl.RecipeDaoImpl;
 import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.activity.MainActivity;
-import fptu.prm.cookcook.ui.adapter.AddRecipeAdapter;
+import fptu.prm.cookcook.ui.adapter.RecipeAdapter;
 import fptu.prm.cookcook.utils.ToastUtil;
 
 public class AddFragment extends Fragment {
@@ -32,7 +30,7 @@ public class AddFragment extends Fragment {
     private Button btnAddNewRecipe;
     private Button btnShareTips;
     private List<Recipe> listRecipe;
-    private AddRecipeAdapter addFoodAdapter;
+    private RecipeAdapter addFoodAdapter;
 
     private void bindingView(View view) {
         rcvAddScreen = view.findViewById(R.id.rcvAddScreen);
@@ -71,11 +69,17 @@ public class AddFragment extends Fragment {
         bindingView(view);
         loadData();
         bindingAction(view);
-
-        addFoodAdapter = new AddRecipeAdapter(getContext(), listRecipe);
+        // initialize sub-view
+        addFoodAdapter = new RecipeAdapter(getContext(), listRecipe, R.layout.item_card_add_screen, this::onItemClick);
         rcvAddScreen.setAdapter(addFoodAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         rcvAddScreen.setLayoutManager(layoutManager);
+    }
+
+    private void onItemClick(Recipe recipe) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        assert mainActivity != null;
+        mainActivity.goToDetailRecipe(recipe);
     }
 
     private void loadData() {

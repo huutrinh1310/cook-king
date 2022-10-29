@@ -1,7 +1,6 @@
 package fptu.prm.cookcook.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,24 +13,22 @@ import android.widget.FrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fptu.prm.cookcook.R;
+import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.fragment.AddFragment;
+import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
 import fptu.prm.cookcook.ui.fragment.HomeFragment;
 import fptu.prm.cookcook.ui.fragment.SearchFragment;
 import fptu.prm.cookcook.ui.fragment.UserFragment;
-import fptu.prm.cookcook.utils.TranslateAnimationUtil;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigation;
-    private FrameLayout bodyContainer;
 
     private void bindingView() {
-        bodyContainer = findViewById(R.id.body_container);
         bottomNavigation = findViewById(R.id.bottom_navigation);
     }
 
     private void bindingAction() {
-        bodyContainer.setOnTouchListener(new TranslateAnimationUtil(this, bottomNavigation));
         bottomNavigation.setOnItemSelectedListener(this::onItemNavigationClick);
     }
 
@@ -58,6 +55,19 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.body_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    public void goToDetailRecipe(Recipe recipe) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DetailRecipeFragment detailFragment = new DetailRecipeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("recipe", recipe);
+
+        detailFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.body_container, detailFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

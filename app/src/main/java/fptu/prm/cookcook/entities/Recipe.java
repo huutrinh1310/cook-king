@@ -1,23 +1,26 @@
 package fptu.prm.cookcook.entities;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Map;
 
-public class Recipe {
+import fptu.prm.cookcook.dao.Impl.AccountDaoImpl;
+import fptu.prm.cookcook.dao.callback.AccountCallBack;
+
+public class Recipe implements Serializable {
     private int accountId;
     private int id;
     private String image;
     private String description;
     private Map<String, Ingredients> ingredients;
     private int readyInMinutes;
-    private int servings;
+    private String servings;
     private Map<String, Step> steps;
     private String title;
 
     public Recipe() {
     }
 
-    public Recipe(int accountId, int id, String image, String description, Map<String, Ingredients> ingredients, int readyInMinutes, int servings, Map<String, Step> steps, String title) {
+    public Recipe(int accountId, int id, String image, String description, Map<String, Ingredients> ingredients, int readyInMinutes, String servings, Map<String, Step> steps, String title) {
         this.accountId = accountId;
         this.id = id;
         this.image = image;
@@ -77,11 +80,11 @@ public class Recipe {
         this.readyInMinutes = readyInMinutes;
     }
 
-    public int getServings() {
+    public String getServings() {
         return servings;
     }
 
-    public void setServings(int servings) {
+    public void setServings(String servings) {
         this.servings = servings;
     }
 
@@ -99,6 +102,22 @@ public class Recipe {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Account getAccount() {
+        final Account[] account = {new Account()};
+        AccountDaoImpl.getInstance().getAccountById(accountId, new AccountCallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                account[0] = (Account) object;
+            }
+
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
+        return account[0];
     }
 
     @Override

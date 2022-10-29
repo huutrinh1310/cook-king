@@ -13,18 +13,15 @@ import com.bumptech.glide.Glide;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.entities.Recipe;
-import fptu.prm.cookcook.ui.activity.MainActivity;
-import fptu.prm.cookcook.ui.fragment.AddRecipeFragment;
-import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
-import fptu.prm.cookcook.utils.ToastUtil;
+import fptu.prm.cookcook.storage.SharePreferenceManager;
 
-public class AddRecipeViewHolder extends RecyclerView.ViewHolder{
+public class RecipeViewHolder extends RecyclerView.ViewHolder{
     private Context mContext;
     private ImageView imgRecipe;
     private TextView txtRecipeName;
     private TextView txtRecipeDescription;
 
-    public AddRecipeViewHolder(@NonNull View itemView, Context mContext) {
+    public RecipeViewHolder(@NonNull View itemView, Context mContext) {
         super(itemView);
         this.mContext = mContext;
         bindingView(itemView);
@@ -42,6 +39,7 @@ public class AddRecipeViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void setRecipeItem(Recipe recipe) {
+        //set data to item
         Glide.with(mContext)
                 .load(recipe.getImage())
                 .into(imgRecipe);
