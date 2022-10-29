@@ -23,4 +23,13 @@
     <string name="addCardTitle">Bạn đã đăng hình món mình nấu ở đây chưa?</string>
     <string name="addCardDescription">Truyền cảm hứng nấu món của bạn đến mọi người nào!</string>
     <string name="hint_addRecipe">Hãy chia sẻ với mọi người về món \nnày của bạn nhé - ai đã truyền\ncảm hứng cho bạn, tại sao nó đặc \nbiệt, bạn nấu món này cho ai?.</string>
+    <string name="account_menu_name">Setting</string>
+    <string name="account_menu_desc">For something</string>
+    <string name="account_menu_notify">Notify</string>
+    <string name="account_menu_saved_food">Saved food</string>
+    <string name="account_menu_self_food">Self food</string>
+    <string name="account_menu_info">Information</string>
+    <string name="account_menu_setting">Setting</string>
+    <string name="account_menu_exit">Exit</string>
+
 </resources>
