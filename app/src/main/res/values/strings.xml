@@ -7,4 +7,11 @@
     <string name="add">Add</string>
     <string name="user">User</string>
     <string name="add_recipe">Add recipe</string>
+    <string name="account_menu_name">Setting</string>
+    <string name="account_menu_desc">For something</string>
+    <string name="account_menu_notify">Notify</string>
+    <string name="account_menu_info">Information</string>
+    <string name="account_menu_setting">Setting</string>
+    <string name="account_menu_exit">Exit</string>
+
 </resources>

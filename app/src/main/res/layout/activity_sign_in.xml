@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Sign Up"
-            android:textColor="@color/red_btn_bg_color"
+            android:textColor="@color/yellow"
             android:textStyle="bold" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

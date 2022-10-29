@@ -1,16 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.UserFragment">
+    tools:context=".ui.fragment.UserFragment"
+    android:background="@color/white">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/headerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/logo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:id="@+id/avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/headerBackground" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/avatarCheck"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_person"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/avatar"
+            app:layout_constraintEnd_toEndOf="@+id/avatar" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/actionFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="phoneNumber,buttonAction"
+            app:flow_horizontalAlign="start"
+            app:flow_verticalGap="2dp"
+            app:flow_verticalStyle="spread"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/avatar"
+            app:layout_constraintEnd_toStartOf="@+id/experiencePoint"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
+            app:layout_constraintTop_toTopOf="@+id/avatar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/phoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            app:layout_constrainedWidth="true"
+            tools:text="Họ và tên" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/buttonAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            tools:text="Xac thuc thong tin" />
+
+        <View
+            android:id="@+id/anchor"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/experiencePoint"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/round_corner"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/round_corner"
+            app:layout_constraintBottom_toBottomOf="@+id/avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/avatar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_menu_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="8dp"
+            android:paddingBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/anchor" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_sign_out"
         android:layout_width="wrap_content"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_gravity="end"
+        android:text="Sign Out" />
 
 </FrameLayout>

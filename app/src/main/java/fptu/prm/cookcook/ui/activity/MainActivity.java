@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
     }
 
-    private void bindingAction(){
-            bottomNavigation.setOnItemSelectedListener(this::onItemNavigationClick);
+    private void bindingAction() {
+        bottomNavigation.setOnItemSelectedListener(this::onItemNavigationClick);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -71,12 +72,5 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new HomeFragment());
         bindingView();
         bindingAction();
-
-        mViewBinding.btnSignOut.setOnClickListener(view1 -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(this, SplashActivity.class);
-            startActivity(intent);
-        });
-
     }
 }
