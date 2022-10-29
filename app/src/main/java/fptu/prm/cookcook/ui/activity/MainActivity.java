@@ -6,14 +6,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fptu.prm.cookcook.R;
+import fptu.prm.cookcook.databinding.ActivityMainBinding;
+import fptu.prm.cookcook.utils.ToastUtil;
 import fptu.prm.cookcook.ui.fragment.AddFragment;
 import fptu.prm.cookcook.ui.fragment.HomeFragment;
 import fptu.prm.cookcook.ui.fragment.SearchFragment;
@@ -21,6 +28,7 @@ import fptu.prm.cookcook.ui.fragment.UserFragment;
 import fptu.prm.cookcook.utils.TranslateAnimationUtil;
 
 public class MainActivity extends AppCompatActivity {
+    private ActivityMainBinding mViewBinding;
 
     private BottomNavigationView bottomNavigation;
     private FrameLayout bodyContainer;
@@ -65,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = mViewBinding.getRoot();
+        setContentView(view);
         replaceFragment(new HomeFragment());
         bindingView();
         bindingAction();

@@ -27,9 +27,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".ui.activity.MainActivity" />
-        <activity android:name=".ui.activity.SignInActivity" />
-        <activity android:name=".ui.activity.SignUpActivity" />
+        <activity android:name=".ui.activity.MainActivity"/>
+        <activity android:name=".ui.activity.SignInActivity"/>
+        <activity android:name=".ui.activity.SignUpActivity"/>
+        <activity android:name=".ui.activity.UserInfoActivity"/>
     </application>
 
 </manifest>
