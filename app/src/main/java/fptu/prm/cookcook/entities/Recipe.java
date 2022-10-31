@@ -1,13 +1,14 @@
 package fptu.prm.cookcook.entities;
 
+import androidx.lifecycle.LiveData;
+
 import java.io.Serializable;
 import java.util.Map;
 
 import fptu.prm.cookcook.dao.Impl.AccountDaoImpl;
-import fptu.prm.cookcook.dao.callback.AccountCallBack;
 
 public class Recipe implements Serializable {
-    private int accountId;
+    private String accountId;
     private int id;
     private String image;
     private String description;
@@ -20,7 +21,7 @@ public class Recipe implements Serializable {
     public Recipe() {
     }
 
-    public Recipe(int accountId, int id, String image, String description, Map<String, Ingredients> ingredients, int readyInMinutes, String servings, Map<String, Step> steps, String title) {
+    public Recipe(String accountId, int id, String image, String description, Map<String, Ingredients> ingredients, int readyInMinutes, String servings, Map<String, Step> steps, String title) {
         this.accountId = accountId;
         this.id = id;
         this.image = image;
@@ -32,11 +33,11 @@ public class Recipe implements Serializable {
         this.title = title;
     }
 
-    public int getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -76,6 +77,13 @@ public class Recipe implements Serializable {
         return readyInMinutes;
     }
 
+    public String getMinutes() {
+        if (readyInMinutes > 60)
+            return readyInMinutes / 60 + " tiếng " + readyInMinutes % 60 + " phút";
+        else
+            return readyInMinutes + " phút";
+    }
+
     public void setReadyInMinutes(int readyInMinutes) {
         this.readyInMinutes = readyInMinutes;
     }
@@ -104,21 +112,6 @@ public class Recipe implements Serializable {
         this.title = title;
     }
 
-    public Account getAccount() {
-        final Account[] account = {new Account()};
-        AccountDaoImpl.getInstance().getAccountById(accountId, new AccountCallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                account[0] = (Account) object;
-            }
-
-            @Override
-            public void onFail(String message) {
-
-            }
-        });
-        return account[0];
-    }
 
     @Override
     public String toString() {

@@ -1,11 +1,10 @@
 package fptu.prm.cookcook.dao;
 
-import fptu.prm.cookcook.dao.callback.AccountCallBack;
-import fptu.prm.cookcook.dao.callback.RecipeCallback;
+import androidx.lifecycle.LiveData;
+
 import fptu.prm.cookcook.entities.Account;
 
 public interface AccountDao {
-    void getAccountById(int id, AccountCallBack callback);
 
-    void getAccountById(String id, AccountCallBack callback);
+    LiveData<Account> getAccountById(String id);
 }

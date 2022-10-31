@@ -1,6 +1,8 @@
 package fptu.prm.cookcook.dao.Impl;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,9 +11,9 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import fptu.prm.cookcook.dao.AccountDao;
-import fptu.prm.cookcook.dao.callback.AccountCallBack;
 import fptu.prm.cookcook.entities.Account;
 import fptu.prm.cookcook.service.FirebaseDatabaseService;
+import fptu.prm.cookcook.utils.LoggerUtil;
 
 public class AccountDaoImpl implements AccountDao {
     private final FirebaseDatabase firebaseDatabase = FirebaseDatabaseService.getInstance();
@@ -29,34 +31,21 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void getAccountById(int id, AccountCallBack callback) {
-        FirebaseDatabaseService.getReference(ACCOUNT_COLLECTION).child(String.valueOf(id)).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Account account = snapshot.getValue(Account.class);
-                callback.onSuccess(account);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                callback.onFail(error.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void getAccountById(String id, AccountCallBack callback) {
+    public LiveData<Account> getAccountById(String id) {
+        MutableLiveData<Account> account = new MutableLiveData<>();
         FirebaseDatabaseService.getReference(ACCOUNT_COLLECTION).child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Account account = snapshot.getValue(Account.class);
-                callback.onSuccess(account);
+                Account account1 = snapshot.getValue(Account.class);
+                account.setValue(account1);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                callback.onFail(error.getMessage());
+                LoggerUtil.e(error.getMessage());
+                account.setValue(null);
             }
         });
+        return account;
     }
 }
