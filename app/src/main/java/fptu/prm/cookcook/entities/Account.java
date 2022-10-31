@@ -10,6 +10,7 @@ public class Account {
     private String address;
     private String avatar;
     private String email;
+    private String description;
     private List<Integer> listOfFollower;
     private List<Integer> listOfFollowing;
     private List<Integer> listOfRecipes;
@@ -21,11 +22,12 @@ public class Account {
     public Account() {
     }
 
-    public Account(String id, String address, String avatar, String email, List<Integer> listOfFollower, List<Integer> listOfFollowing, List<Integer> listOfRecipes, String name, String username, String password, String phone) {
+    public Account(String id, String address, String avatar, String email, String description, List<Integer> listOfFollower, List<Integer> listOfFollowing, List<Integer> listOfRecipes, String name, String username, String password, String phone) {
         this.id = id;
         this.address = address;
         this.avatar = avatar;
         this.email = email;
+        this.description = description;
         this.listOfFollower = listOfFollower;
         this.listOfFollowing = listOfFollowing;
         this.listOfRecipes = listOfRecipes;
@@ -65,6 +67,14 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Integer> getListOfFollower() {
@@ -126,10 +136,11 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", address='" + address + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
+                ", description='" + description + '\'' +
                 ", listOfFollower=" + listOfFollower +
                 ", listOfFollowing=" + listOfFollowing +
                 ", listOfRecipes=" + listOfRecipes +

@@ -3,7 +3,9 @@ package fptu.prm.cookcook.ui.fragment;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -12,6 +14,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -30,9 +34,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import fptu.prm.cookcook.R;
+import fptu.prm.cookcook.dao.Impl.RecipeDaoImpl;
+import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.entities.Step;
+import fptu.prm.cookcook.utils.AlertDialogUtil;
 import fptu.prm.cookcook.utils.LoggerUtil;
 import fptu.prm.cookcook.utils.SeperateUtil;
 import fptu.prm.cookcook.utils.ToastUtil;
@@ -40,7 +47,8 @@ import fptu.prm.cookcook.utils.ToastUtil;
 public class AddRecipeFragment extends Fragment {
     public final static String TAG = "AddRecipeFragment";
     static int i = 2;
-    int REQUEST_CODE_CAMERA = 1;
+    int Read_Permission = 1;
+    private static final int PICK_IMAGE = 1;
 
     private ImageView btnCardAddClose;
     private Button btnUpStream;
@@ -57,7 +65,8 @@ public class AddRecipeFragment extends Fragment {
     // binding view
     private ImageView imgAddScreen, imgAddStep;
 
-    private ActivityResultLauncher<Intent> mActivityLauncher;
+    private ActivityResultLauncher<Intent> mTitleLauncher;
+    private ActivityResultLauncher<Intent> mStepLauncher;
 
     private void bindingView(View view) {
         bindingViewAddRecipe(view);
@@ -72,16 +81,40 @@ public class AddRecipeFragment extends Fragment {
         btnAddMorePortion = view.findViewById(R.id.btnAddMorePortion);
         btnAddMoreStep = view.findViewById(R.id.btnAddMoreStep);
 
-        mActivityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == RESULT_OK) {
-                    Intent data = result.getData();
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    imgAddScreen.setImageBitmap(bitmap);
+        mTitleLauncher = mActiviy(imgAddScreen);
+        mStepLauncher = mActiviy(imgAddStep);
+    }
+
+    private ActivityResultLauncher<Intent> mActiviy(View layout) {
+        return registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK && null != result.getData()) {
+                            if (result.getData().getClipData() != null) {
+                                int countOfImage = result.getData().getClipData().getItemCount();
+                                // pick one image
+                                if (countOfImage == 1) {
+                                    try {
+                                        Bitmap bitmaps = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getData().getClipData().getItemAt(0).getUri());
+                                        ((ImageView) layout).setImageBitmap(bitmaps);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+                                try {
+                                    Bitmap bitmaps = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getData().getClipData().getItemAt(0).getUri());
+                                    ((ImageView) layout).setImageBitmap(bitmaps);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            ToastUtil.error(getContext(), "You haven't picked Image");
+                        }
+                    }
                 }
-            }
-        });
+        );
     }
 
     private void bindingViewAddRecipe(View view) {
@@ -90,8 +123,8 @@ public class AddRecipeFragment extends Fragment {
         edtAddRecipeDescription = view.findViewById(R.id.edtAddRecipeDescription);
         edtAddRecipePortion = view.findViewById(R.id.edtAddRecipePortion);
         edtAddRecipeTime = view.findViewById(R.id.edtAddRecipeTime);
-        edtStep = view.findViewById(R.id.edtStep);
-        imgAddStep = view.findViewById(R.id.imgAddStep);
+//        edtStep = view.findViewById(R.id.edtStep);
+//        imgAddStep = view.findViewById(R.id.imgAddStep);
     }
 
     private void bindingAction(View view) {
@@ -101,13 +134,32 @@ public class AddRecipeFragment extends Fragment {
         btnAddMoreStep.setOnClickListener(this::onBtnAddMoreStepClick);
         btnUpStream.setOnClickListener(this::upStream);
 
-        imgAddScreen.setOnClickListener(this::addImage);
-        imgAddStep.setOnClickListener(this::addImage);
+        imgAddScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addImage(v, mTitleLauncher);
+            }
+        });
+//        imgAddStep.setOnClickListener(this::addImageStep);
     }
 
-    private void addImage(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        mActivityLauncher.launch(intent);
+    private void addImage(View view, ActivityResultLauncher<Intent> mActivityLauncher) {
+        requestPermission(mActivityLauncher);
+    }
+
+    private void requestPermission(ActivityResultLauncher<Intent> mActivityLauncher) {
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.CAMERA}, Read_Permission);
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        }
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+        mActivityLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 
     private void upStream(View view) {
@@ -121,6 +173,19 @@ public class AddRecipeFragment extends Fragment {
             recipe.setReadyInMinutes(SeperateUtil.getNumber(edtAddRecipeTime.getText().toString()));
             recipe.setIngredients(ingredientsMap);
             recipe.setSteps(stepMap);
+            // put to firebase
+            RecipeDaoImpl.getInstance().addRecipe(recipe, new RecipeCallback() {
+                @Override
+                public void onSuccess(Object object) {
+                    AlertDialogUtil.success(getContext(), "Success", "Add recipe success", "OK", null);
+                }
+
+                @Override
+                public void onFail(String message) {
+                    AlertDialogUtil.error(getContext(), "Error", message, "OK", null);
+                }
+            });
+
         } else {
             ToastUtil.error(getContext(), "Please fill all information");
         }
@@ -193,6 +258,14 @@ public class AddRecipeFragment extends Fragment {
     private void onBtnAddMoreStepClick(View view) {
         View viewStep = LayoutInflater.from(getContext()).inflate(R.layout.step_item, null);
         viewStep.setLayoutParams(layoutParams);
+        ImageView imgAddStep = viewStep.findViewById(R.id.imgAddStep);
+        ActivityResultLauncher<Intent> mStepLauncher = mActiviy(imgAddStep);
+        imgAddStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addImage(v, mStepLauncher);
+            }
+        });
         lnrAddRecipeStep.addView(viewStep);
     }
 
@@ -225,6 +298,7 @@ public class AddRecipeFragment extends Fragment {
 
 
     private void initLayout(View view) {
+        onBtnAddMoreStepClick(view);
         onBtnAddMoreStepClick(view);
     }
 

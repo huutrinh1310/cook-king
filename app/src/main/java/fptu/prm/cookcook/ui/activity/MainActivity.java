@@ -18,9 +18,9 @@ import android.widget.FrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fptu.prm.cookcook.R;
-import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.databinding.ActivityMainBinding;
 import fptu.prm.cookcook.utils.ToastUtil;
+import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.fragment.AddFragment;
 import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
 import fptu.prm.cookcook.ui.fragment.HomeFragment;

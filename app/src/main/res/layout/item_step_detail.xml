@@ -25,19 +25,16 @@
         android:text="1. Bước 1"
         android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <ImageView
-            android:id="@+id/imgStep"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_person" />
-    </LinearLayout>
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:id="@+id/lnrImgStepDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+        </LinearLayout>
+    </HorizontalScrollView>
 </LinearLayout>

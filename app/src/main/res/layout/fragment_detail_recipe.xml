@@ -24,6 +24,7 @@
                 android:id="@+id/imgRecipeDetail"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_person" />
 
             <TextView
@@ -50,6 +51,7 @@
                         android:id="@+id/imgUserDetail"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_person" />
 
                     <LinearLayout
@@ -262,20 +264,18 @@
                         android:text="1. Bước 1"
                         android:textSize="14sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="20dp">
-
-                        <ImageView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:src="@drawable/ic_person" />
-                    </LinearLayout>
+                        android:layout_marginTop="10dp">
+                        <LinearLayout
+                            android:id="@+id/lnrImgStepDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+                        </LinearLayout>
+                    </HorizontalScrollView>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -299,13 +299,13 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/lnrCreaterDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="20dp">
 
                 <ImageView
+                    android:id="@+id/imgCreater"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_person" />
@@ -317,6 +317,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txtCreaterName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="User Name"
@@ -324,7 +325,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-
+                        android:id="@+id/txtCreaterLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Viet Nam"
@@ -332,6 +333,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txtCreaterLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -340,6 +342,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtCreaterDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
