@@ -1,6 +1,8 @@
 package fptu.prm.cookcook.dao.Impl;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,7 +62,8 @@ public class RecipeDaoImpl implements RecipeDao {
     }
 
     @Override
-    public void getRecipeById(String foodId, RecipeCallback callback) {
+    public void getRecipesById(String foodId, RecipeCallback callback) {
+        MutableLiveData<Recipe> recipe = new MutableLiveData<>();
         FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(foodId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -80,18 +83,21 @@ public class RecipeDaoImpl implements RecipeDao {
     }
 
     @Override
-    public void getRecipeByUserId(String userId, RecipeCallback callback) {
+    public LiveData<Recipe> getRecipeByUserId(String userId) {
+        MutableLiveData<Recipe> recipe = new MutableLiveData<>();
         FirebaseDatabaseService.getReference(FOOD_COLLECTION).orderByChild(FOOD_USER_ID).equalTo(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                callback.onSuccess(snapshot);
+                Recipe food = snapshot.getValue(Recipe.class);
+                recipe.setValue(food);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                callback.onFail(error.getMessage());
+                recipe.setValue(null);
             }
         });
+        return recipe;
     }
 
     @Override

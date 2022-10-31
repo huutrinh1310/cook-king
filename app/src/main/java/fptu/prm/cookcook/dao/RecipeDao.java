@@ -1,5 +1,7 @@
 package fptu.prm.cookcook.dao;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.Map;
 
 import fptu.prm.cookcook.dao.callback.RecipeCallback;
@@ -11,9 +13,9 @@ public interface RecipeDao {
     // get all food
     void getAllRecipe(RecipeCallback callback);
     // get food by id
-    void getRecipeById(String food, RecipeCallback callback);
+    void getRecipesById(String food, RecipeCallback callback);
     // get food by user id
-    void getRecipeByUserId(String userId, RecipeCallback callback);
+    LiveData<Recipe> getRecipeByUserId(String userId);
     // add food
     void addRecipe(Recipe recipe, RecipeCallback callback);
     // update food

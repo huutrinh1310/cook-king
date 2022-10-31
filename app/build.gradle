@@ -79,4 +79,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation 'info.hoang8f:fbutton:1.0.5'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20'
+
 }
