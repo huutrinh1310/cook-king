@@ -103,7 +103,7 @@ public class AddRecipeFragment extends Fragment {
                                 }
                             } else {
                                 try {
-                                    Bitmap bitmaps = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getData().getClipData().getItemAt(0).getUri());
+                                    Bitmap bitmaps = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getData().getData());
                                     ((ImageView) layout).setImageBitmap(bitmaps);
                                 } catch (Exception e) {
                                     e.printStackTrace();
