@@ -2,6 +2,7 @@ package fptu.prm.cookcook.dao;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
 import java.util.Map;
 
 import fptu.prm.cookcook.dao.callback.RecipeCallback;
@@ -23,4 +24,5 @@ public interface RecipeDao {
     // delete food
     void deleteRecipe(String foodId, RecipeCallback callback);
 
+    LiveData<List<Recipe>> getAllRecipe();
 }

@@ -17,6 +17,7 @@ import fptu.prm.cookcook.dao.RecipeDao;
 import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.service.FirebaseDatabaseService;
+import fptu.prm.cookcook.utils.LoggerUtil;
 
 public class RecipeDaoImpl implements RecipeDao {
     private final FirebaseDatabase firebaseDatabase = FirebaseDatabaseService.getInstance();
@@ -113,5 +114,28 @@ public class RecipeDaoImpl implements RecipeDao {
     @Override
     public void deleteRecipe(String foodId, RecipeCallback callback) {
         FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(foodId).removeValue();
+    }
+
+    @Override
+    public LiveData<List<Recipe>> getAllRecipe() {
+        MutableLiveData<List<Recipe>> recipeMutableLiveData = new MutableLiveData<>();
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Recipe> recipeList = new ArrayList<Recipe>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Recipe recipe = dataSnapshot.getValue(Recipe.class);
+                    recipeList.add(recipe);
+                }
+                recipeMutableLiveData.setValue(recipeList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                LoggerUtil.e(error.getMessage());
+                recipeMutableLiveData.setValue(null);
+            }
+        });
+        return recipeMutableLiveData;
     }
 }
