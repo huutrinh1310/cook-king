@@ -28,10 +28,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.dao.Impl.RecipeDaoImpl;
@@ -39,6 +41,8 @@ import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.entities.Step;
+import fptu.prm.cookcook.storage.SharePreferenceManager;
+import fptu.prm.cookcook.ui.activity.MainActivity;
 import fptu.prm.cookcook.utils.AlertDialogUtil;
 import fptu.prm.cookcook.utils.LoggerUtil;
 import fptu.prm.cookcook.utils.SeperateUtil;
@@ -49,6 +53,7 @@ public class AddRecipeFragment extends Fragment {
     static int i = 2;
     int Read_Permission = 1;
     private static final int PICK_IMAGE = 1;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private ImageView btnCardAddClose;
     private Button btnUpStream;
@@ -167,6 +172,7 @@ public class AddRecipeFragment extends Fragment {
         if (validateAddRecipe()) {
             Map<String, Ingredients> ingredientsMap = getAllIngredients();
             Map<String, Step> stepMap = getAllSteps();
+            recipe.setAccountId(user.getUid());
             recipe.setTitle(edtAddRecipeTitle.getText().toString());
             recipe.setDescription(edtAddRecipeDescription.getText().toString());
             recipe.setServings(edtAddRecipePortion.getText().toString());
@@ -197,10 +203,6 @@ public class AddRecipeFragment extends Fragment {
     private Map<String, Step> getAllSteps() {
         Map<String, Step> stepMap = new HashMap<>();
         Map<String, String> mapImages = new HashMap<>();
-        if (edtStep.getText().toString().isEmpty()) {
-            ToastUtil.error(getContext(), "Please enter step");
-            return null;
-        }
         for (int i = 0; i < lnrAddRecipeStep.getChildCount(); i++) {
             if (lnrAddRecipeStep.getChildAt(i) instanceof LinearLayout) {
                 Step step = new Step();
@@ -213,7 +215,7 @@ public class AddRecipeFragment extends Fragment {
                                 EditText editText = (EditText) linearLayout1.getChildAt(k);
                                 step.setId(i + 1);
                                 step.setDescription(editText.getText().toString());
-                                stepMap.put(String.valueOf(i + 1), step);
+                                stepMap.put(user.getUid() + "_" + i, step);
                             }
                         }
                     }
@@ -320,6 +322,7 @@ public class AddRecipeFragment extends Fragment {
             ToastUtil.error(getContext(), "Please enter time");
             isValid = false;
         }
+        // check ingredients is empty or not
         for (int i = 0; i < lnrIngredient.getChildCount(); i++) {
             if (lnrIngredient.getChildAt(i) instanceof LinearLayout) {
                 LinearLayout linearLayout = (LinearLayout) lnrIngredient.getChildAt(i);
@@ -334,6 +337,7 @@ public class AddRecipeFragment extends Fragment {
                 }
             }
         }
+        // check steps is empty or not
         for (int i = 0; i < lnrAddRecipeStep.getChildCount(); i++) {
             if (lnrAddRecipeStep.getChildAt(i) instanceof LinearLayout) {
                 LinearLayout linearLayout = (LinearLayout) lnrAddRecipeStep.getChildAt(i);
