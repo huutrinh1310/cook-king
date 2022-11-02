@@ -17,14 +17,11 @@ import fptu.prm.cookcook.model.AccountMenu;
 import fptu.prm.cookcook.ui.adapter.AccountMenuAdapter.AccountMenuViewHolder;
 
 public class AccountMenuAdapter extends RecyclerView.Adapter<AccountMenuViewHolder> {
-    private Context mContext;
     private ArrayList<AccountMenu> mAccountMenus;
     private IItemClickListener itemClickListener;
 
-    public AccountMenuAdapter(Context mContext,
-                              ArrayList<AccountMenu> mAccountMenus,
+    public AccountMenuAdapter(ArrayList<AccountMenu> mAccountMenus,
                               IItemClickListener itemClickListener) {
-        this.mContext = mContext;
         this.mAccountMenus = mAccountMenus;
         this.itemClickListener = itemClickListener;
     }
@@ -59,7 +56,9 @@ public class AccountMenuAdapter extends RecyclerView.Adapter<AccountMenuViewHold
         }
 
         void bind(AccountMenu accountMenu) {
-            Glide.with(mContext).load(accountMenu.getIconRes()).into(itemBinding.ivMenuIcon);
+            Glide.with(itemBinding.getRoot().getContext())
+                    .load(accountMenu.getIconRes())
+                    .into(itemBinding.ivMenuIcon);
             itemBinding.tvMenuName.setText(accountMenu.getTitleRes());
             itemBinding.getRoot().setOnClickListener(
                     view -> itemClickListener.onClickAccountMenu(accountMenu)

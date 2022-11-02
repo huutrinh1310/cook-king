@@ -105,7 +105,7 @@ public class UserFragment extends Fragment {
                 true
         ));
 
-        AccountMenuAdapter adapter = new AccountMenuAdapter(requireActivity(),
+        AccountMenuAdapter adapter = new AccountMenuAdapter(
                 accountMenuList,
                 accountMenu -> {
                     switch (accountMenu.getId()) {
