@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment {
 
     private void loadUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        ;
         Glide.with(getContext())
                 .load(user.getPhotoUrl())
                 .into(avatar);

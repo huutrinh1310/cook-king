@@ -23,6 +23,4 @@ public interface RecipeDao {
     void updateRecipe(Map<String, Object> food, RecipeCallback callback);
     // delete food
     void deleteRecipe(int foodId, RecipeCallback callback);
-
-    LiveData<List<Recipe>> getAllRecipe();
 }
