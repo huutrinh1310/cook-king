@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="Cooking Draft"
+            android:text="Your Recipes"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +109,20 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTitleDraft" />
+
+        <TextView
+            android:id="@+id/txtNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No recipe yet"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/rcvAddScreen"
+            app:layout_constraintEnd_toEndOf="@+id/rcvAddScreen"
+            app:layout_constraintStart_toStartOf="@+id/rcvAddScreen"
+            app:layout_constraintTop_toTopOf="@+id/rcvAddScreen" />
 
         <include
             layout="@layout/footer"

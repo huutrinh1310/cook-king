@@ -4,12 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,15 +23,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.developer.kalert.KAlertDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Set;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.dao.Impl.AccountDaoImpl;
+import fptu.prm.cookcook.dao.Impl.RecipeDaoImpl;
+import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Account;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
+import fptu.prm.cookcook.utils.AlertDialogUtil;
 import fptu.prm.cookcook.utils.LoggerUtil;
 import fptu.prm.cookcook.utils.ToastUtil;
 
@@ -45,7 +57,9 @@ public class DetailRecipeFragment extends Fragment {
     private TextView txtServing;
     private LinearLayout lnrIngredientDetail;
     private LinearLayout lnrStepDetail;
+    private ImageView imgShowMenu;
 
+    private Button btnBookMark, btnUpdateRecipe;
     public DetailRecipeFragment() {
     }
 
@@ -70,11 +84,61 @@ public class DetailRecipeFragment extends Fragment {
         txtCreaterLink = view.findViewById(R.id.txtCreaterLink);
         txtCreaterLocation = view.findViewById(R.id.txtCreaterLocation);
         txtCreaterDescription = view.findViewById(R.id.txtCreaterDescription);
+        imgShowMenu = view.findViewById(R.id.imgShowMenu);
+        //button
+        btnBookMark = view.findViewById(R.id.btnBookMark);
+        btnUpdateRecipe = view.findViewById(R.id.btnUpdateRecipe);
     }
 
     private void bindingAction(View view) {
         txtCreaterLink.setOnClickListener(this::goToCreaterProfile);
         txtUserLinkDetail.setOnClickListener(this::goToCreaterProfile);
+        imgShowMenu.setOnClickListener(this::showMenu);
+    }
+
+    private void showMenu(View view) {
+        registerForContextMenu(view);
+        getActivity().openContextMenu(view);
+    }
+
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.floating_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                deleteRecipe();
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void deleteRecipe() {
+        AlertDialogUtil.warning(getContext(), "Are you sure?", "You want to delete this recipe?", " Yes", new KAlertDialog.KAlertClickListener() {
+            @Override
+            public void onClick(KAlertDialog kAlertDialog) {
+                RecipeDaoImpl recipeDao = new RecipeDaoImpl();
+                recipeDao.deleteRecipe(recipe.getId(), new RecipeCallback() {
+                    @Override
+                    public void onSuccess(Object object) {
+                        ToastUtil.success(getContext(), "Delete recipe successfully");
+                        getActivity().onBackPressed();
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+                        ToastUtil.error(getContext(), message);
+                    }
+                });
+            }
+        });
+
     }
 
     // go to creater profile
@@ -94,6 +158,23 @@ public class DetailRecipeFragment extends Fragment {
         bindingView(view);
         bindingAction(view);
         receiveData();
+        isOwnerRecipe();
+    }
+
+    private void isOwnerRecipe() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        recipe.getAccount().observe(getViewLifecycleOwner(), new Observer<Account>() {
+            @Override
+            public void onChanged(Account account) {
+                if (account != null && account.getId().equals(user.getUid())) {
+                    btnBookMark.setVisibility(View.GONE);
+                    btnUpdateRecipe.setVisibility(View.VISIBLE);
+                } else {
+                    btnUpdateRecipe.setVisibility(View.GONE);
+                    btnBookMark.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     // TODO: nhận dữ liệu từ fragment trước

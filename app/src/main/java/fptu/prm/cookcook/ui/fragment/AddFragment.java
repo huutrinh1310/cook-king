@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,18 +88,16 @@ public class AddFragment extends Fragment {
     }
 
     private void loadData() {
-        RecipeDaoImpl.getInstance().getAllRecipe(new RecipeCallback() {
-            @Override
-            public void onSuccess(Object object) {
-                listRecipe = (List<Recipe>) object;
-                addFoodAdapter.setListRecipe(listRecipe);
-                addFoodAdapter.notifyDataSetChanged();
+        LiveData<List<Recipe>> listLiveData = RecipeDaoImpl.getInstance().getRecipeByUserId(FirebaseAuth.getInstance().getUid());
+        listLiveData.observe(getViewLifecycleOwner(), recipes -> {
+            listRecipe = recipes;
+            addFoodAdapter.setListRecipe(listRecipe);
+            if (addFoodAdapter.getRecipeList().size() == 0) {
+                // show no data view
+                TextView txtNoData = getView().findViewById(R.id.txtNoData);
+                txtNoData.setVisibility(View.VISIBLE);
             }
-
-            @Override
-            public void onFail(String message) {
-                ToastUtil.error(getContext(), message);
-            }
+            addFoodAdapter.notifyDataSetChanged();
         });
     }
 }
