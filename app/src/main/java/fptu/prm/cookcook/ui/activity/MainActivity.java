@@ -31,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mViewBinding;
 
     private BottomNavigationView bottomNavigation;
+    private String currentFragment = "";
+    public static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        if (instance == null) {
+            instance = new MainActivity();
+        }
+        return instance;
+    }
 
     private void bindingView() {
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -86,8 +95,34 @@ public class MainActivity extends AppCompatActivity {
         mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = mViewBinding.getRoot();
         setContentView(view);
-        replaceFragment(new HomeFragment());
+        loadFragment();
         bindingView();
         bindingAction();
+    }
+
+    private void loadFragment() {
+        Intent intent = getIntent();
+        currentFragment = intent.getStringExtra("fragment");
+        if(currentFragment == null||currentFragment.equals("")) {
+            currentFragment = "HomeFragment";
+        }
+        switch (currentFragment) {
+            case "HomeFragment":
+                replaceFragment(new HomeFragment());
+                break;
+            case "SearchFragment":
+                replaceFragment(new SearchFragment());
+                break;
+            case "AddFragment":
+                replaceFragment(new AddFragment());
+                break;
+            case "UserFragment":
+                replaceFragment(new UserFragment());
+                break;
+            case "DetailFragment":
+                goToDetailRecipe((Recipe) getIntent().getSerializableExtra("recipeSaved"));
+                break;
+
+        }
     }
 }
