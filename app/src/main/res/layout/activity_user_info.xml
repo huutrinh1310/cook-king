@@ -21,8 +21,8 @@
         android:layout_centerVertical="true"
         android:background="@drawable/ic_person"
         app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
     <View
@@ -38,10 +38,20 @@
         android:id="@+id/rv_user_info"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingTop="8dp"
         android:paddingBottom="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_update_info"
         app:layout_constraintTop_toBottomOf="@+id/anchor" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_update_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Exit"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

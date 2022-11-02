@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,12 +33,35 @@
         android:layout_marginTop="10dp"
         android:text="Sign In" />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_sign_in_with_google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Sign In With Google" />
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_sign_in_with_google"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/rectangle"
+            android:gravity="center"
+            android:text="Sign in with Google"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sign_in_with_google"
+            app:layout_constraintStart_toStartOf="@+id/tv_sign_in_with_google"
+            app:layout_constraintTop_toTopOf="@+id/tv_sign_in_with_google"
+            app:srcCompat="@drawable/google" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"

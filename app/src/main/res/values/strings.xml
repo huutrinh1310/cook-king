@@ -28,8 +28,8 @@
     <string name="account_menu_notify">Notify</string>
     <string name="account_menu_saved_food">Saved food</string>
     <string name="account_menu_self_food">Self food</string>
-    <string name="account_menu_info">Information</string>
+    <string name="account_menu_info">My profile</string>
     <string name="account_menu_setting">Setting</string>
-    <string name="account_menu_exit">Exit</string>
+    <string name="account_menu_exit">Logout</string>
 
 </resources>

@@ -1,25 +1,19 @@
 package fptu.prm.cookcook.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.View;
-
-import com.google.firebase.auth.FirebaseAuth;
-
-import android.view.MenuItem;
-import android.widget.FrameLayout;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.databinding.ActivityMainBinding;
-import fptu.prm.cookcook.utils.ToastUtil;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.fragment.AddFragment;
 import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
