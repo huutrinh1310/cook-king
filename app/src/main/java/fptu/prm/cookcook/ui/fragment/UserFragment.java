@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.databinding.FragmentUserBinding;
 import fptu.prm.cookcook.model.AccountMenu;
+import fptu.prm.cookcook.ui.activity.SelfRecipesActivity;
 import fptu.prm.cookcook.ui.activity.SplashActivity;
 import fptu.prm.cookcook.ui.activity.UserInfoActivity;
 import fptu.prm.cookcook.ui.adapter.AccountMenuAdapter;
@@ -158,7 +159,8 @@ public class UserFragment extends Fragment {
     }
 
     private void openSelfFood(AccountMenu accountMenu) {
-        Toast.makeText(requireActivity(), getString(accountMenu.getTitleRes()), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(requireActivity(), SelfRecipesActivity.class);
+        startActivity(intent);
     }
 
     private void openUserInfo() {
