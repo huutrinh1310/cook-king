@@ -43,16 +43,17 @@ public class HomeFragment extends Fragment {
 
     private RecipeAdapter adapterRecipe;
     private ListCategoryAdapter adapterCategory;
-    private RecyclerView recyclerViewCategoryList, recyclerViewPopularList, recyclerViewNewestList;
+    private RecyclerView recyclerViewCategoryList,  recyclerViewNewestList;
     private ImageView avatar;
+    private TextView txtUsername;
     private List<Categories> categoriesList;
     private List<Recipe> recipesList;
 
     private void bindingView(View view) {
         recyclerViewCategoryList = view.findViewById(R.id.recyclerViewCate);
-        recyclerViewPopularList = view.findViewById(R.id.recyclerViewPopu);
         recyclerViewNewestList = view.findViewById(R.id.recyclerViewNewest);
         avatar = view.findViewById(R.id.avatar);
+        txtUsername = view.findViewById(R.id.txtUsername);
         recipesList = new ArrayList<>();
         categoriesList = new ArrayList<>();
     }
@@ -85,8 +86,10 @@ public class HomeFragment extends Fragment {
 
     private void loadUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        txtUsername.setText(user.getDisplayName());
         Glide.with(getContext())
                 .load(user.getPhotoUrl())
+                .transform(new RoundedCorners(500))
                 .into(avatar);
     }
 
