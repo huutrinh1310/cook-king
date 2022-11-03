@@ -73,6 +73,8 @@ public class AddRecipeFragment extends Fragment {
     private ActivityResultLauncher<Intent> mTitleLauncher;
     private ActivityResultLauncher<Intent> mStepLauncher;
 
+    private int countRecipeStep = 2;
+
     private void bindingView(View view) {
         bindingViewAddRecipe(view);
         btnCardAddClose = view.findViewById(R.id.btnCardAddClose);
@@ -136,7 +138,12 @@ public class AddRecipeFragment extends Fragment {
         btnCardAddClose.setOnClickListener(this::onBtnCardAddCloseClick);
         btnAddIngredient.setOnClickListener(this::onBtnAddIngredientClick);
         btnAddMorePortion.setOnClickListener(this::onBtnAddMorePortionClick);
-        btnAddMoreStep.setOnClickListener(this::onBtnAddMoreStepClick);
+        btnAddMoreStep.setOnClickListener(v -> {
+            lnrAddRecipeStep.getChildAt(countRecipeStep).setVisibility(View.VISIBLE);
+            if (countRecipeStep < 4) {
+                countRecipeStep++;
+            } else btnAddMoreStep.setVisibility(View.GONE);
+        });
         btnUpStream.setOnClickListener(this::upStream);
 
         imgAddScreen.setOnClickListener(new View.OnClickListener() {
@@ -302,6 +309,12 @@ public class AddRecipeFragment extends Fragment {
     private void initLayout(View view) {
         onBtnAddMoreStepClick(view);
         onBtnAddMoreStepClick(view);
+        onBtnAddMoreStepClick(view);
+        onBtnAddMoreStepClick(view);
+        onBtnAddMoreStepClick(view);
+        lnrAddRecipeStep.getChildAt(2).setVisibility(View.GONE);
+        lnrAddRecipeStep.getChildAt(3).setVisibility(View.GONE);
+        lnrAddRecipeStep.getChildAt(4).setVisibility(View.GONE);
     }
 
     private boolean validateAddRecipe() {
