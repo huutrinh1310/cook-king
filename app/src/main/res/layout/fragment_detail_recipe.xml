@@ -47,7 +47,7 @@
                     android:orientation="horizontal"
                     android:padding="20dp">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgUserDetail"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -316,7 +316,7 @@
                 android:orientation="horizontal"
                 android:padding="20dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgCreater"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
