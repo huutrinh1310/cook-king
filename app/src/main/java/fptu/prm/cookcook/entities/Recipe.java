@@ -1,5 +1,9 @@
 package fptu.prm.cookcook.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import java.io.Serializable;
@@ -7,7 +11,7 @@ import java.util.Map;
 
 import fptu.prm.cookcook.dao.Impl.AccountDaoImpl;
 
-public class Recipe implements Serializable {
+public class Recipe implements Parcelable, Serializable {
     private String accountId;
     private int id;
     private String image;
@@ -32,6 +36,28 @@ public class Recipe implements Serializable {
         this.steps = steps;
         this.title = title;
     }
+
+    protected Recipe(Parcel in) {
+        accountId = in.readString();
+        id = in.readInt();
+        image = in.readString();
+        description = in.readString();
+        readyInMinutes = in.readInt();
+        servings = in.readString();
+        title = in.readString();
+    }
+
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
     public String getAccountId() {
         return accountId;
@@ -112,6 +138,9 @@ public class Recipe implements Serializable {
         this.title = title;
     }
 
+    public LiveData<Account> getAccount() {
+        return AccountDaoImpl.getInstance().getAccountById(accountId);
+    }
 
     @Override
     public String toString() {
@@ -125,5 +154,23 @@ public class Recipe implements Serializable {
                 ", steps=" + steps +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(accountId);
+        dest.writeInt(id);
+        dest.writeString(image);
+        dest.writeString(description);
+        dest.writeInt(readyInMinutes);
+        dest.writeString(servings);
+        dest.writeString(title);
+        dest.writeMap(ingredients);
+        dest.writeMap(steps);
     }
 }
