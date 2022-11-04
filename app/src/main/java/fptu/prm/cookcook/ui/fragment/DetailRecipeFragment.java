@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
@@ -27,7 +28,9 @@ import com.developer.kalert.KAlertDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import fptu.prm.cookcook.R;
@@ -37,13 +40,13 @@ import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Account;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
+import fptu.prm.cookcook.ui.adapter.RecipeAdapter;
 import fptu.prm.cookcook.utils.AlertDialogUtil;
 import fptu.prm.cookcook.utils.LoggerUtil;
 import fptu.prm.cookcook.utils.ToastUtil;
 
 public class DetailRecipeFragment extends Fragment {
     private Recipe recipe;
-    private RecyclerView rcvRecipeSameAuthor;
     private List<Recipe> listRecipeSameAuthor;
     //recipe
     private ImageView imgRecipeDetail;
@@ -60,11 +63,11 @@ public class DetailRecipeFragment extends Fragment {
     private ImageView imgShowMenu;
 
     private Button btnBookMark, btnUpdateRecipe;
+
     public DetailRecipeFragment() {
     }
 
     private void bindingView(View view) {
-        rcvRecipeSameAuthor = view.findViewById(R.id.rcvRecipeSameAuthor);
 
         //recipe
         imgRecipeDetail = view.findViewById(R.id.imgRecipeDetail);
@@ -93,7 +96,27 @@ public class DetailRecipeFragment extends Fragment {
     private void bindingAction(View view) {
         txtCreaterLink.setOnClickListener(this::goToCreaterProfile);
         txtUserLinkDetail.setOnClickListener(this::goToCreaterProfile);
-        imgShowMenu.setOnClickListener(this::showMenu);
+        if(isOwner(recipe.getAccountId()))
+            imgShowMenu.setOnClickListener(this::showMenu);
+//        btnUpdateRecipe.setOnClickListener(this::updateRecipe);
+    }
+
+//    private void updateRecipe(View view) {
+//        if (recipe != null) {
+//            UpdateRecipeFragment updateRecipeFragment = new UpdateRecipeFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("recipeUpdate", recipe);
+//            updateRecipeFragment.setArguments(bundle);
+//            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.body_container, updateRecipeFragment).commit();
+//        }
+//    }
+
+    private boolean isOwner(String accountId){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            return user.getUid().equals(accountId);
+        }
+        return false;
     }
 
     private void showMenu(View view) {
@@ -126,9 +149,9 @@ public class DetailRecipeFragment extends Fragment {
                 RecipeDaoImpl recipeDao = new RecipeDaoImpl();
                 recipeDao.deleteRecipe(recipe.getId(), new RecipeCallback() {
                     @Override
-                    public void onSuccess(Object object) {
+                    public void onSuccess(Object... object) {
                         ToastUtil.success(getContext(), "Delete recipe successfully");
-                        getActivity().onBackPressed();
+                        requireActivity().onBackPressed();
                     }
 
                     @Override
@@ -147,8 +170,7 @@ public class DetailRecipeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_detail_recipe, container, false);
     }
 
@@ -156,25 +178,9 @@ public class DetailRecipeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindingView(view);
-        bindingAction(view);
         receiveData();
-        isOwnerRecipe();
-    }
+        bindingAction(view);
 
-    private void isOwnerRecipe() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        recipe.getAccount().observe(getViewLifecycleOwner(), new Observer<Account>() {
-            @Override
-            public void onChanged(Account account) {
-                if (account != null && account.getId().equals(user.getUid())) {
-                    btnBookMark.setVisibility(View.GONE);
-                    btnUpdateRecipe.setVisibility(View.VISIBLE);
-                } else {
-                    btnUpdateRecipe.setVisibility(View.GONE);
-                    btnBookMark.setVisibility(View.VISIBLE);
-                }
-            }
-        });
     }
 
     // TODO: nhận dữ liệu từ fragment trước
@@ -208,23 +214,24 @@ public class DetailRecipeFragment extends Fragment {
         LiveData<Account> liveData = AccountDaoImpl.getInstance().getAccountById(accountId);
         liveData.observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
-                Glide.with(getContext())
-                        .load(account.getAvatar())
-                        .apply(new RequestOptions().bitmapTransform(new RoundedCorners(500)))
-                        .into(imgUserDetail);
+                Glide.with(getContext()).load(account.getAvatar()).apply(new RequestOptions().bitmapTransform(new RoundedCorners(500))).into(imgUserDetail);
                 txtUserNameDetail.setText(account.getName());
                 txtUserLinkDetail.setText("@" + account.getUsername());
                 txtUserLocationDetail.setText(account.getAddress());
 
-                Glide.with(getContext())
-                        .load(account.getAvatar())
-                        .apply(new RequestOptions().bitmapTransform(new RoundedCorners(500)))
-                        .into(imgCreater);
+                Glide.with(getContext()).load(account.getAvatar()).apply(new RequestOptions().bitmapTransform(new RoundedCorners(500))).into(imgCreater);
                 txtCreaterName.setText(account.getName());
                 txtCreaterLink.setText("@" + account.getUsername());
                 txtCreaterLocation.setText(account.getAddress());
                 txtCreaterDescription.setText(account.getDescription());
-                LoggerUtil.d("account" + account.toString());
+
+                if (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid().equals(accountId)) {
+                    btnBookMark.setVisibility(View.GONE);
+                    btnUpdateRecipe.setVisibility(View.VISIBLE);
+                } else {
+                    btnUpdateRecipe.setVisibility(View.GONE);
+                    btnBookMark.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

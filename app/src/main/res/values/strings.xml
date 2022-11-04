@@ -31,5 +31,8 @@
     <string name="account_menu_info">My profile</string>
     <string name="account_menu_setting">Setting</string>
     <string name="account_menu_exit">Logout</string>
+    <string name="title_today_popular_recipe">Món tìm kiếm phổ biến hôm nay</string>
+    <string name="search_recipe">Tìm tên các món, các nguyên liệu hay bí quyết</string>
+    <string name="recent_search">Món đã xem gần đây</string>
 
 </resources>
