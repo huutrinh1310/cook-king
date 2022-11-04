@@ -144,16 +144,7 @@ public class Recipe implements Parcelable, Serializable {
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "accountId=" + accountId +
-                ", id=" + id +
-                ", image='" + image + '\'' +
-                ", ingredients=" + ingredients +
-                ", readyInMinutes=" + readyInMinutes +
-                ", servings=" + servings +
-                ", steps=" + steps +
-                ", title='" + title + '\'' +
-                '}';
+        return title;
     }
 
     @Override

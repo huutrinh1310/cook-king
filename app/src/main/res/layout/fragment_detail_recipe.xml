@@ -361,30 +361,5 @@
                 android:text="Description for the recipe, they can be long or short, it depends on the user, but it is not necessary to be long."
                 android:textSize="14sp" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnrRecipeSameAuthor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingTop="20dp"
-                android:paddingEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Các món khác từ cùng tác giả"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvRecipeSameAuthor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"/>
-
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>

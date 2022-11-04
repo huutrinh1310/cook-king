@@ -2,9 +2,13 @@ package fptu.prm.cookcook.ui.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import static com.google.common.io.Files.getFileExtension;
+
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -22,18 +26,26 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.dao.Impl.RecipeDaoImpl;
@@ -41,6 +53,8 @@ import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.entities.Step;
+import fptu.prm.cookcook.service.FirebaseDatabaseService;
+import fptu.prm.cookcook.service.FirebaseStorageService;
 import fptu.prm.cookcook.storage.SharePreferenceManager;
 import fptu.prm.cookcook.ui.activity.MainActivity;
 import fptu.prm.cookcook.utils.AlertDialogUtil;
@@ -72,6 +86,8 @@ public class AddRecipeFragment extends Fragment {
 
     private ActivityResultLauncher<Intent> mTitleLauncher;
     private ActivityResultLauncher<Intent> mStepLauncher;
+    private StorageReference reference;
+    private List<Uri> urlImage;
 
     private int countRecipeStep = 2;
 
@@ -90,6 +106,8 @@ public class AddRecipeFragment extends Fragment {
 
         mTitleLauncher = mActiviy(imgAddScreen);
         mStepLauncher = mActiviy(imgAddStep);
+        reference = FirebaseStorageService.getInstance().getStorageReference();
+        urlImage = new ArrayList<>();
     }
 
     private ActivityResultLauncher<Intent> mActiviy(View layout) {
@@ -104,6 +122,7 @@ public class AddRecipeFragment extends Fragment {
                                     try {
                                         Bitmap bitmaps = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getData().getClipData().getItemAt(0).getUri());
                                         ((ImageView) layout).setImageBitmap(bitmaps);
+                                        urlImage.add(result.getData().getData());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -112,6 +131,7 @@ public class AddRecipeFragment extends Fragment {
                                 try {
                                     Bitmap bitmaps = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getData().getData());
                                     ((ImageView) layout).setImageBitmap(bitmaps);
+                                    urlImage.add(result.getData().getData());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -187,23 +207,64 @@ public class AddRecipeFragment extends Fragment {
             recipe.setIngredients(ingredientsMap);
             recipe.setSteps(stepMap);
             // put to firebase
-            RecipeDaoImpl.getInstance().addRecipe(recipe, new RecipeCallback() {
+
+            String itemKey = RecipeDaoImpl.getInstance().addRecipe(recipe, new RecipeCallback() {
                 @Override
-                public void onSuccess(Object object) {
-                    AlertDialogUtil.success(getContext(), "Success", "Add recipe success", "OK", null);
+                public void onSuccess(Object... object) {
+                    ToastUtil.success(getContext(), "Add recipe success");
                 }
 
                 @Override
                 public void onFail(String message) {
-                    AlertDialogUtil.error(getContext(), "Error", message, "OK", null);
+                    ToastUtil.error(getContext(), "Add recipe fail");
                 }
             });
+            if (urlImage != null) {
+                uploadImageToFirebase(urlImage, itemKey);
+            }
 
         } else {
             ToastUtil.error(getContext(), "Please fill all information");
         }
         // TODO: add user id preferences to save recipe
         LoggerUtil.d("recipe", recipe.toString());
+    }
+
+    private void uploadImageToFirebase(List<Uri> urlImage, String itemKey) {
+        LoggerUtil.d("urlImage", urlImage.toString());
+        upLoadSingleImg(urlImage.get(0), itemKey, "image");
+        for (int i = 1, size = urlImage.size(); i < size; i++) {
+            upLoadMultiImg(urlImage.get(i), itemKey, "steps", user.getUid() + "_" + (i - 1), "images");
+        }
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.replaceFragment(new AddFragment());
+    }
+
+    private void upLoadMultiImg(Uri uri, String... path) {
+        Map<String, String> map = new HashMap<>();
+        String randomKey = UUID.randomUUID().toString();
+        StorageReference imageRef = reference.child("food/" + randomKey);
+        imageRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri1 -> {
+                map.put(path[2], uri1.toString());
+                RecipeDaoImpl.getInstance().updateRecipe(path[0], path[1], path[2], path[3], map);
+            });
+        });
+    }
+
+    private void upLoadSingleImg(Uri uri, String... child) {
+        String randomKey = UUID.randomUUID().toString();
+        StorageReference imageRef = reference.child("food/" + randomKey);
+        imageRef.putFile(uri).addOnSuccessListener(taskSnapshot ->
+                imageRef.getDownloadUrl().addOnSuccessListener(uri1 -> {
+                    RecipeDaoImpl.getInstance().updateRecipe(child[0], child[1], uri1.toString());
+                })).addOnFailureListener(e -> ToastUtil.error(getContext(), "Upload image fail"));
+    }
+
+    private String getFileExtension(Uri mUri) {
+        ContentResolver contentResolver = getContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(mUri));
     }
 
     // get all ingredients
@@ -228,7 +289,7 @@ public class AddRecipeFragment extends Fragment {
                     }
                     if (linearLayout.getChildAt(j) instanceof ImageView) {
                         ImageView imageView = (ImageView) linearLayout.getChildAt(j);
-                        mapImages.put(String.valueOf(j + 1), imageView.toString());
+                        mapImages.put(user.getUid() + "_" + (j + 1), imageView.toString());
                     }
                 }
                 step.setImages(mapImages);
@@ -254,7 +315,7 @@ public class AddRecipeFragment extends Fragment {
                         ingredients.setName(SeperateUtil.getName(editText.getText().toString()));
                         ingredients.setUnit(SeperateUtil.getUnit(editText.getText().toString()));
                         ingredients.setAmount(SeperateUtil.getNumber(editText.getText().toString()));
-                        ingredientsMap.put(i + "", ingredients);
+                        ingredientsMap.put(user.getUid() + "_" + i + "", ingredients);
                     }
                 }
             }

@@ -23,7 +23,7 @@ import fptu.prm.cookcook.utils.LoggerUtil;
 
 public class RecipeDaoImpl implements RecipeDao {
     private final FirebaseDatabase firebaseDatabase = FirebaseDatabaseService.getInstance();
-    static final String FOOD_COLLECTION = "recipe";
+    public static final String FOOD_COLLECTION = "recipe";
     static final String FOOD_USER_ID = "accountId";
     static final String FOOD_ID = "id";
     static final String FOOD_INGREDIENTS = "ingredients";
@@ -56,25 +56,6 @@ public class RecipeDaoImpl implements RecipeDao {
                 List<Recipe> foodList = new ArrayList<Recipe>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Recipe food = new Recipe();
-//                    food.setId((Integer.parseInt(dataSnapshot.child(FOOD_ID).getValue().toString())));
-//                    food.setTitle(dataSnapshot.child(FOOD_NAME).getValue(String.class));
-                    LoggerUtil.d(dataSnapshot.getValue().toString() + " recipe : " + dataSnapshot.child(FOOD_ID).getValue().toString() + " " + (dataSnapshot.child(FOOD_INGREDIENTS).getValue() instanceof Map));
-////                    if(dataSnapshot.child(FOOD_INGREDIENTS).getValue() instanceof Map){
-//                    food.setIngredients((Map<String, Ingredients>) dataSnapshot.child(FOOD_INGREDIENTS).getValue());
-////                    } else{
-////                        food.setIngredients(null);
-////                    }
-//                    food.setAccountId(dataSnapshot.child(FOOD_USER_ID).getValue(String.class));
-//                    food.setDescription(dataSnapshot.child(FOOD_DESCRIPTION).getValue(String.class));
-//                    food.setImage(dataSnapshot.child(FOOD_IMAGE).getValue(String.class));
-//                    food.setReadyInMinutes(dataSnapshot.child(FOOD_READY_IN_MINUTES).getValue(Integer.class));
-//                    food.setServings(dataSnapshot.child(FOOD_SERVINGS).getValue(String.class));
-////                    if(dataSnapshot.child(FOOD_STEPS).getValue() instanceof Map){
-//                    food.setSteps((Map<String, Step>) dataSnapshot.child(FOOD_STEPS).getValue());
-////                    }else{
-////                    food.setSteps(null);
-////                    }
-//                    foodList.add(food);
                     foodList.add(dataSnapshot.getValue(Recipe.class));
                 }
                 recipeList.setValue(foodList);
@@ -133,17 +114,34 @@ public class RecipeDaoImpl implements RecipeDao {
     }
 
     @Override
-    public void addRecipe(Recipe food, RecipeCallback callback) {
-        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(food.getAccountId() + "_" + food.getId()).push().setValue(food);
+    public String addRecipe(Recipe food, RecipeCallback callback) {
+        String key = FirebaseDatabaseService.getReference(FOOD_COLLECTION).push().getKey();
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(key).setValue(food);
+        return key;
     }
 
     @Override
-    public void updateRecipe(Map<String, Object> food, RecipeCallback callback) {
-        FirebaseDatabaseService.getReference(FOOD_COLLECTION).updateChildren(food);
+    public void updateRecipe(Map<String, Object> food, String item, RecipeCallback callback) {
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(item).updateChildren(food);
     }
 
     @Override
     public void deleteRecipe(int foodId, RecipeCallback callback) {
-        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(String.valueOf(foodId)).removeValue();
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(String.valueOf(foodId)).removeValue().addOnCompleteListener(aVoid -> {
+            callback.onSuccess();
+        }).addOnFailureListener(e -> {
+            callback.onFail(e.getMessage());
+        });
+    }
+
+    public void updateRecipe(String itemKey, String steps, String itemStep, String images, Map<String, String> imageMap) {
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(itemKey).child(steps).child(itemStep).child(images).setValue(imageMap);
+    }
+
+    public void updateRecipe(String itemKey, String image, String value) {
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(itemKey).child(image).setValue(value);
+    }
+    public void addIdRecipe(String pathItem){
+        FirebaseDatabaseService.getReference(FOOD_COLLECTION).child(pathItem).child("id").setValue(pathItem);
     }
 }
