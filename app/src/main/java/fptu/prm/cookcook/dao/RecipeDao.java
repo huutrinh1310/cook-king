@@ -13,14 +13,19 @@ public interface RecipeDao {
 
     // get all food
     LiveData<List<Recipe>> getAllRecipe();
+
     // get food by id
     LiveData<List<Recipe>> getRecipesById(String foodId);
+
     // get food by user id
     LiveData<List<Recipe>> getRecipeByUserId(String userId);
+
     // add food
-    void addRecipe(Recipe recipe, RecipeCallback callback);
+    String addRecipe(Recipe recipe, RecipeCallback callback);
+
     // update food
-    void updateRecipe(Map<String, Object> food, RecipeCallback callback);
+    void updateRecipe(Map<String, Object> food, String item, RecipeCallback callback);
+
     // delete food
     void deleteRecipe(int foodId, RecipeCallback callback);
 }

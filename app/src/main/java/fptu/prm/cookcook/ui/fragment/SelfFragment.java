@@ -48,7 +48,7 @@ public class SelfFragment extends Fragment {
 
         savedRecipesAdapter = new SelfRecipeAdapter(getContext(), listRecipe, this::onItemSelected);
         rcvSavedRecipes.setAdapter(savedRecipesAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 
         rcvSavedRecipes.setLayoutManager(layoutManager);
 
