@@ -24,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.dao.CategoriesDao;
@@ -42,8 +44,9 @@ import fptu.prm.cookcook.utils.LoggerUtil;
 public class HomeFragment extends Fragment {
 
     private RecipeAdapter adapterRecipe;
+    private RecipeAdapter adapterRecipeMore;
     private ListCategoryAdapter adapterCategory;
-    private RecyclerView recyclerViewCategoryList,  recyclerViewNewestList;
+    private RecyclerView recyclerViewCategoryList,  recyclerViewNewestList, recyclerViewPopularList;
     private ImageView avatar;
     private TextView txtUsername;
     private List<Categories> categoriesList;
@@ -54,6 +57,7 @@ public class HomeFragment extends Fragment {
         recyclerViewNewestList = view.findViewById(R.id.recyclerViewNewest);
         avatar = view.findViewById(R.id.avatar);
         txtUsername = view.findViewById(R.id.txtUsername);
+        recyclerViewPopularList = view.findViewById(R.id.recyclerViewPopu);
         recipesList = new ArrayList<>();
         categoriesList = new ArrayList<>();
     }
@@ -76,12 +80,17 @@ public class HomeFragment extends Fragment {
 //        recyclerViewCategory();
         loadUser();
         loadRecipe();
+        loadRandomRecipe();
         recyclerViewCategory();
         adapterRecipe = new RecipeAdapter(getContext(), recipesList, R.layout.item_card_add_screen, this::onItemClick);
         recyclerViewNewestList.setAdapter(adapterRecipe);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewNewestList.setLayoutManager(linearLayoutManager);
-        LoggerUtil.d("recipes", recipesList.toString());
+
+        adapterRecipeMore = new RecipeAdapter(getContext(), recipesList, R.layout.item_popular, this::onItemClick);
+        recyclerViewPopularList.setAdapter(adapterRecipeMore);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerViewPopularList.setLayoutManager(linearLayoutManager1);
     }
 
     private void loadUser() {
@@ -122,9 +131,20 @@ public class HomeFragment extends Fragment {
         LiveData<List<Recipe>> listRecipe = RecipeDaoImpl.getInstance().getAllRecipe();
         listRecipe.observe(getViewLifecycleOwner(), recipeList -> {
             this.recipesList = recipeList;
+            ((RecipeAdapter) adapterRecipeMore).setListRecipe(recipesList);
+            adapterRecipe.notifyDataSetChanged();
+        });
+    }
+    private void loadRandomRecipe(){
+        LiveData<List<Recipe>> listRecipe = RecipeDaoImpl.getInstance().getAllRecipe();
+        listRecipe.observe(getViewLifecycleOwner(), recipeList -> {
+            Collections.shuffle(recipeList, new Random());
+            this.recipesList = recipeList;
+            if(recipeList.size() >= 3){
+                recipesList = recipeList.subList(0, 3);
+            }
             ((RecipeAdapter) adapterRecipe).setListRecipe(recipesList);
             adapterRecipe.notifyDataSetChanged();
         });
-
     }
 }

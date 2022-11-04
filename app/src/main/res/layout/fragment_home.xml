@@ -32,18 +32,6 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Order &amp; Eat"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/txtUsername"
-                    app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatar"
                     android:layout_width="77dp"
@@ -53,25 +41,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/txtUsername"
                     app:layout_constraintVertical_bias="0.004" />
-
-                <EditText
-                    android:id="@+id/editTextTextPersonName"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/search_background"
-                    android:drawableStart="@android:drawable/ic_search_category_default"
-                    android:ems="10"
-                    android:hint="Find Your Food"
-                    android:inputType="textPersonName"
-                    android:paddingStart="20dp"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"
@@ -83,7 +52,7 @@
                     android:background="@drawable/orange_light_banner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName">
+                    app:layout_constraintTop_toBottomOf="@+id/avatar">
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -172,6 +141,32 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                 </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Popular"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewNewest" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewPopu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
