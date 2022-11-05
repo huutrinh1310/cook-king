@@ -21,5 +21,6 @@
     <color name="bg_addScreen">#f8f6f2</color>
     <color name="bg_homeScreen">#f8f6f2</color>
     <color name="dark">#414141</color>
+    <color name="placeholder">#BEBEBE</color>
 
 </resources>

@@ -32,14 +32,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,11 +50,8 @@ import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.entities.Step;
-import fptu.prm.cookcook.service.FirebaseDatabaseService;
 import fptu.prm.cookcook.service.FirebaseStorageService;
-import fptu.prm.cookcook.storage.SharePreferenceManager;
 import fptu.prm.cookcook.ui.activity.MainActivity;
-import fptu.prm.cookcook.utils.AlertDialogUtil;
 import fptu.prm.cookcook.utils.LoggerUtil;
 import fptu.prm.cookcook.utils.SeperateUtil;
 import fptu.prm.cookcook.utils.ToastUtil;
@@ -226,8 +220,6 @@ public class AddRecipeFragment extends Fragment {
         } else {
             ToastUtil.error(getContext(), "Please fill all information");
         }
-        // TODO: add user id preferences to save recipe
-        LoggerUtil.d("recipe", recipe.toString());
     }
 
     private void uploadImageToFirebase(List<Uri> urlImage, String itemKey) {
@@ -413,7 +405,7 @@ public class AddRecipeFragment extends Fragment {
         }
         // check steps is empty or not
         for (int i = 0; i < lnrAddRecipeStep.getChildCount(); i++) {
-            if (lnrAddRecipeStep.getChildAt(i) instanceof LinearLayout) {
+            if (lnrAddRecipeStep.getChildAt(i) instanceof LinearLayout && lnrAddRecipeStep.getChildAt(i).getVisibility() == View.VISIBLE) {
                 LinearLayout linearLayout = (LinearLayout) lnrAddRecipeStep.getChildAt(i);
                 for (int j = 0; j < linearLayout.getChildCount(); j++) {
                     if (linearLayout.getChildAt(j) instanceof LinearLayout) {
@@ -425,6 +417,14 @@ public class AddRecipeFragment extends Fragment {
                                     ToastUtil.error(getContext(), "Please enter step");
                                     isValid = false;
                                 }
+                            }
+                        }
+                    } else {
+                        if (linearLayout.getChildAt(j) instanceof ImageView) {
+                            ImageView imageView = (ImageView) linearLayout.getChildAt(j);
+                            if (imageView.getDrawable() == null) {
+                                ToastUtil.error(getContext(), "Please add image");
+                                isValid = false;
                             }
                         }
                     }
