@@ -1,69 +1,51 @@
 package fptu.prm.cookcook.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.widget.ImageView;
-
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.dao.Impl.RecipeDaoImpl;
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.adapter.SelfRecipeAdapter;
+import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
+import fptu.prm.cookcook.ui.fragment.SelfFragment;
+import fptu.prm.cookcook.utils.ToastUtil;
 
 public class SelfRecipesActivity extends AppCompatActivity {
-    private ImageView imgBack;
-    private RecyclerView rcvSavedRecipes;
-    private List<Recipe> listRecipe;
-    private SelfRecipeAdapter savedRecipesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_self_recipes);
-        bindingView();
-        loadData();
-        bindingAction();
-
-        savedRecipesAdapter = new SelfRecipeAdapter(this, listRecipe, this::onItemClick);
-        rcvSavedRecipes.setAdapter(savedRecipesAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-
-        rcvSavedRecipes.setLayoutManager(layoutManager);
+        replaceFragment(new SelfFragment());
     }
 
-    private void bindingAction() {
-        imgBack.setOnClickListener(v -> finish());
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.self_recipes, fragment);
+        fragmentTransaction.commit();
     }
 
-    private void bindingView() {
-        imgBack = findViewById(R.id.imgBack);
-        rcvSavedRecipes = findViewById(R.id.rcvSavedRecipes);
-        listRecipe = new ArrayList<>();
+    public void goToDetailRecipe(Recipe recipe) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DetailRecipeFragment detailFragment = new DetailRecipeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("recipe", recipe);
+
+        detailFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.self_recipes, detailFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
-    private void onItemClick(Recipe recipe) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("recipeSaved", (Parcelable) recipe);
-        intent.putExtra("fragment", "DetailFragment");
-        startActivity(intent);
-    }
-
-    private void loadData() {
-        LiveData<List<Recipe>> listLiveData = RecipeDaoImpl.getInstance().getRecipeByUserId(FirebaseAuth.getInstance().getUid());
-        listLiveData.observe(this, recipes -> {
-            listRecipe = recipes;
-            savedRecipesAdapter.setListRecipe(listRecipe);
-            savedRecipesAdapter.notifyDataSetChanged();
-        });
-    }
 }

@@ -2,10 +2,11 @@ package fptu.prm.cookcook.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Account {
+public class Account implements Serializable {
     private String id;
     private String address;
     private String avatar;

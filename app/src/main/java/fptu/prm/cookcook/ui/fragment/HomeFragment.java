@@ -24,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import fptu.prm.cookcook.R;
 import fptu.prm.cookcook.dao.CategoriesDao;
@@ -42,18 +44,23 @@ import fptu.prm.cookcook.utils.LoggerUtil;
 public class HomeFragment extends Fragment {
 
     private RecipeAdapter adapterRecipe;
+    private RecipeAdapter adapterPopularRecipe;
     private ListCategoryAdapter adapterCategory;
-    private RecyclerView recyclerViewCategoryList, recyclerViewPopularList, recyclerViewNewestList;
+    private RecyclerView recyclerViewCategoryList, recyclerViewNewestList, recyclerViewPopularList;
     private ImageView avatar;
+    private TextView txtUsername;
     private List<Categories> categoriesList;
     private List<Recipe> recipesList;
+    private List<Recipe> recipesPopularList;
 
     private void bindingView(View view) {
         recyclerViewCategoryList = view.findViewById(R.id.recyclerViewCate);
-        recyclerViewPopularList = view.findViewById(R.id.recyclerViewPopu);
         recyclerViewNewestList = view.findViewById(R.id.recyclerViewNewest);
         avatar = view.findViewById(R.id.avatar);
+        txtUsername = view.findViewById(R.id.txtUsername);
+        recyclerViewPopularList = view.findViewById(R.id.recyclerViewPopu);
         recipesList = new ArrayList<>();
+        recipesPopularList = new ArrayList<>();
         categoriesList = new ArrayList<>();
     }
 
@@ -74,20 +81,36 @@ public class HomeFragment extends Fragment {
         bindingAction(view);
 //        recyclerViewCategory();
         loadUser();
-        loadRecipe();
         recyclerViewCategory();
-        adapterRecipe = new RecipeAdapter(getContext(), recipesList, R.layout.item_card_add_screen, this::onItemClick);
-        recyclerViewNewestList.setAdapter(adapterRecipe);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewNewestList.setLayoutManager(linearLayoutManager);
-        LoggerUtil.d("recipes", recipesList.toString());
+        recyclerViewNewest();
+        recyclerViewPopular();
+
     }
 
     private void loadUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        txtUsername.setText(user.getDisplayName());
         Glide.with(getContext())
                 .load(user.getPhotoUrl())
+                .transform(new RoundedCorners(500))
                 .into(avatar);
+    }
+
+
+    private void recyclerViewPopular() {
+        loadPopularRecipe();
+        adapterPopularRecipe = new RecipeAdapter(getContext(), recipesPopularList, R.layout.item_popular, this::onItemClick);
+        recyclerViewPopularList.setAdapter(adapterPopularRecipe);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerViewPopularList.setLayoutManager(linearLayoutManager1);
+    }
+
+    private void recyclerViewNewest() {
+        loadRandomRecipe();
+        adapterRecipe = new RecipeAdapter(getContext(), recipesList, R.layout.item_card_add_screen, this::onItemClick);
+        recyclerViewNewestList.setAdapter(adapterRecipe);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewNewestList.setLayoutManager(linearLayoutManager);
     }
 
     private void recyclerViewCategory() {
@@ -115,13 +138,26 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void loadRecipe() {
+    private void loadPopularRecipe() {
         LiveData<List<Recipe>> listRecipe = RecipeDaoImpl.getInstance().getAllRecipe();
         listRecipe.observe(getViewLifecycleOwner(), recipeList -> {
-            this.recipesList = recipeList;
+            this.recipesPopularList = recipeList;
+            ((RecipeAdapter) adapterPopularRecipe).setListRecipe(recipesPopularList);
+            adapterPopularRecipe.notifyDataSetChanged();
+        });
+    }
+
+    private void loadRandomRecipe() {
+        LiveData<List<Recipe>> listRecipe = RecipeDaoImpl.getInstance().getAllRecipe();
+        listRecipe.observe(getViewLifecycleOwner(), recipeList -> {
+            Collections.shuffle(recipeList, new Random());
+            if (recipeList.size() >= 3) {
+                recipesList = recipeList.subList(0, 3);
+            } else {
+                this.recipesList = recipeList;
+            }
             ((RecipeAdapter) adapterRecipe).setListRecipe(recipesList);
             adapterRecipe.notifyDataSetChanged();
         });
-
     }
 }
