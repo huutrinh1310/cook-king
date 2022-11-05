@@ -6,13 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import fptu.prm.cookcook.entities.Recipe;
 import fptu.prm.cookcook.ui.activity.MainActivity;
 import fptu.prm.cookcook.ui.fragment.DetailRecipeFragment;
+import fptu.prm.cookcook.utils.LoggerUtil;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     private Context mContext;
@@ -54,6 +57,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         Recipe recipe = recipeList.get(position);
         holder.setRecipeItem(recipe);
+        recipe.getAccount().observe((LifecycleOwner) mContext, account -> {
+            LoggerUtil.d("RecipeAdapter", "onBindViewHolder: " + account.getId());
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

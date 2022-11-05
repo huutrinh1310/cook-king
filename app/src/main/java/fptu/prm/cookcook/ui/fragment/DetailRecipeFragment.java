@@ -40,6 +40,7 @@ import fptu.prm.cookcook.dao.callback.RecipeCallback;
 import fptu.prm.cookcook.entities.Account;
 import fptu.prm.cookcook.entities.Ingredients;
 import fptu.prm.cookcook.entities.Recipe;
+import fptu.prm.cookcook.ui.activity.MainActivity;
 import fptu.prm.cookcook.ui.adapter.RecipeAdapter;
 import fptu.prm.cookcook.utils.AlertDialogUtil;
 import fptu.prm.cookcook.utils.LoggerUtil;
@@ -151,6 +152,7 @@ public class DetailRecipeFragment extends Fragment {
                     @Override
                     public void onSuccess(Object... object) {
                         ToastUtil.success(getContext(), "Delete recipe successfully");
+                        kAlertDialog.dismissWithAnimation();
                         requireActivity().onBackPressed();
                     }
 
@@ -166,7 +168,9 @@ public class DetailRecipeFragment extends Fragment {
 
     // go to creater profile
     private void goToCreaterProfile(View view) {
-        ToastUtil.info(getContext(), "go to creater profile");
+        MainActivity mainActivity = (MainActivity) getActivity();
+        assert mainActivity != null;
+        recipe.getAccount().observe(mainActivity, account -> mainActivity.goToProfile(account.getId()));
     }
 
     @Override
